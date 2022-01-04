@@ -299,7 +299,7 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
     public void setFixedMode() {
         mUserInterface.enableDone(View.GONE);
         mUserInterface.enableStop(View.VISIBLE);
-        //mUserInterface.toggleEditButton(View.VISIBLE);
+        mUserInterface.toggleEditButton(View.VISIBLE);
         mUserInterface.lockSearchBar(true);
         mUserInterface.setAddMoreRoute(View.GONE);
 

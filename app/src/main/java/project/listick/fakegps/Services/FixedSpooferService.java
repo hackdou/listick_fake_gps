@@ -18,13 +18,13 @@ import org.osmdroid.util.GeoPoint;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import project.listick.fakegps.AppPreferences;
 import project.listick.fakegps.FusedLocationsProvider;
 import project.listick.fakegps.ListickApp;
 import project.listick.fakegps.LocationOperations;
 import project.listick.fakegps.MainServiceControl;
 import project.listick.fakegps.MockLocProvider;
 import project.listick.fakegps.PermissionManager;
-import project.listick.fakegps.AppPreferences;
 import project.listick.fakegps.Presenter.RouteSettingsPresenter;
 
 public class FixedSpooferService extends Service {
@@ -92,6 +92,7 @@ public class FixedSpooferService extends Service {
 
                 mLatitude = data.getDouble(ListickApp.LATITUDE, mLatitude);
                 mLongitude = data.getDouble(ListickApp.LONGITUDE, mLongitude);
+                geoPoint = new GeoPoint(mLatitude, mLongitude);
 
             }
         };
