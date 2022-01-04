@@ -144,7 +144,7 @@
         <item>0</item>
         <item>1</item>
     </string-array>
-    <string name="share">Share</string>
+    <string name="share">Share location</string>
     <string name="boookmarks">Bookmarks</string>
     <string name="add_in_boookmarks">Add in bookmarks</string>
     <string name="static_spoof">Fixed</string>

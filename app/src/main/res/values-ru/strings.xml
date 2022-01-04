@@ -129,7 +129,7 @@
         <item>Правостороннее движение</item>
         <item>Левостороннее движение</item>
     </string-array>
-    <string name="share">Поделиться</string>
+    <string name="share">Поделиться местоположением</string>
     <string name="boookmarks">Закладки</string>
     <string name="add_in_boookmarks">Добавить в закладки</string>
     <string name="static_spoof">Фиксированный</string>
