@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -18,13 +17,14 @@ import android.widget.Toast;
 import androidx.fragment.app.FragmentActivity;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.Locale;
 
+import project.listick.fakegps.AppPreferences;
 import project.listick.fakegps.Contract.RouteSettingsImpl;
 import project.listick.fakegps.ListickApp;
 import project.listick.fakegps.OnSingleClickListener;
-import project.listick.fakegps.AppPreferences;
 import project.listick.fakegps.Presenter.RouteSettingsPresenter;
 import project.listick.fakegps.R;
 
@@ -39,7 +39,7 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
 
     private EditText elevation;
     private EditText elevationDiff;
-    private Button mContinue;
+    private MaterialButton mContinue;
 
     private CheckBox mClosedRoute;
 
@@ -89,25 +89,37 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
         mContinue.setOnClickListener(new OnSingleClickListener() {
             @Override
             public void onSingleClick(View v) {
-                if (!speedField.getText().toString().isEmpty() && TextUtils.isDigitsOnly(speedField.getText().toString()) &&
-                        !differenceField.getText().toString().isEmpty() && TextUtils.isDigitsOnly(differenceField.getText().toString())){
-                    String elevationStr = RouteSettingsActivity.this.elevation.getText().toString();
-                    String elevationDiffStr = RouteSettingsActivity.this.elevationDiff.getText().toString();
+                    if (!speedField.getText().toString().isEmpty() && TextUtils.isDigitsOnly(speedField.getText().toString()) &&
+                            !differenceField.getText().toString().isEmpty() && TextUtils.isDigitsOnly(differenceField.getText().toString())) {
+                        String elevationStr = RouteSettingsActivity.this.elevation.getText().toString();
+                        String elevationDiffStr = RouteSettingsActivity.this.elevationDiff.getText().toString();
 
-                    float elevation = 0;
-                    float elevationDiff = 0;
+                        float elevation = 0;
+                        float elevationDiff = 0;
 
-                    if (!elevationStr.isEmpty()) {
-                        elevation = Float.parseFloat(elevationStr);
+                        if (!elevationStr.isEmpty()) {
+                            try {
+                                elevation = Float.parseFloat(elevationStr);
+                            } catch (NumberFormatException e) {
+                                UIEffects.TextView.attachErrorWithShake(RouteSettingsActivity.this, RouteSettingsActivity.this.elevation, () -> { });
+                                return;
+                            }
+                        }
+
+                        if (!elevationDiffStr.isEmpty()) {
+                            try {
+                            elevationDiff = Float.parseFloat(elevationDiffStr);
+                            } catch (NumberFormatException e) {
+                                UIEffects.TextView.attachErrorWithShake(RouteSettingsActivity.this, RouteSettingsActivity.this.elevationDiff, () -> { });
+                                return;
+                            }
+                    }
+                        presenter.onContinueClick(Integer.parseInt(speedField.getText().toString()), Integer.parseInt(differenceField.getText().toString()), elevation, elevationDiff, mClosedRoute.isChecked());
                     }
 
-                    if (!elevationDiffStr.isEmpty()) {
-                        elevationDiff = Float.parseFloat(elevationDiffStr);
-                    }
-                    presenter.onContinueClick(Integer.parseInt(speedField.getText().toString()), Integer.parseInt(differenceField.getText().toString()), elevation, elevationDiff, mClosedRoute.isChecked());
-                }
+                    presenter.saveElevation(Float.parseFloat(elevation.getText().toString()), Float.parseFloat(elevationDiff.getText().toString()));
 
-                presenter.saveElevation(Float.parseFloat(elevation.getText().toString()), Float.parseFloat(elevationDiff.getText().toString()));
+
             }
         });
 
