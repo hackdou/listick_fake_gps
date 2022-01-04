@@ -1,16 +1,19 @@
 package project.listick.fakegps.UI;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.Settings;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 
 import project.listick.fakegps.Contract.PermissionsImpl;
 import project.listick.fakegps.OnSingleClickListener;
@@ -63,16 +66,17 @@ public class PermissionsActivity extends Activity implements PermissionsImpl.UI 
         if (requestCode == PERMISSION_REQUEST_CODE){
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 presenter.onPermissionGranted();
-            else
+            else {
                 presenter.onPermissionDenied();
+            }
         }
     }
 
     @Override
     public void showErrorOnButton() {
-        mRequestPermissions.setBackground(ContextCompat.getDrawable(this, R.drawable.uisearchbar_error));
-        mRequestPermissions.startAnimation(AnimationUtils.loadAnimation(this, R.anim.attenuation));
-        mRequestPermissions.setTextColor(getColor(R.color.white));
+        mRequestPermissions.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
+        mRequestPermissions.setTextColor(getColor(R.color.black));
+        mRequestPermissions.setBackgroundColor(getColor(R.color.red_tonal_button));
 
 
         CountDownTimer timer = new CountDownTimer(800, 1000) {
@@ -83,12 +87,18 @@ public class PermissionsActivity extends Activity implements PermissionsImpl.UI 
 
             @Override
             public void onFinish() {
-                mRequestPermissions.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.uisearchbar));
-
-                mRequestPermissions.setTextColor(getColor(R.color.uisearch_textcolor));
-
+                mRequestPermissions.setBackgroundColor(getColor(R.color.primaryColor));
+                mRequestPermissions.clearAnimation();
                 mRequestPermissions.startAnimation(AnimationUtils.loadAnimation(PermissionsActivity.this, R.anim.attenuation));
-                mRequestPermissions.setOnTouchListener(null);
+                mRequestPermissions.setTextColor(getColor(R.color.white));
+
+                if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                    intent.setData(uri);
+                    startActivity(intent);
+                }
+
             }
         };
         timer.start();
