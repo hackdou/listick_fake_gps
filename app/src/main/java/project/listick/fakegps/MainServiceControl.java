@@ -66,7 +66,7 @@ public class MainServiceControl {
     }
 
     public static void startServiceForeground(Service context) {
-        String NOTIFICATION_CHANNEL_ID = "project.listick.fakegps.statuscontrol";
+        String NOTIFICATION_CHANNEL_ID = "project.listick.fakegps_SPOOFING_STATUS";
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

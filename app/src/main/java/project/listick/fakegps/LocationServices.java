@@ -14,7 +14,6 @@ public class LocationServices {
         }
 
         int locationMode = 0;
-        String locationProviders;
 
         try {
             locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);

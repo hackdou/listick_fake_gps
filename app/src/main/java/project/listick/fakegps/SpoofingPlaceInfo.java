@@ -35,7 +35,7 @@ public class SpoofingPlaceInfo {
     public static double longtiude;
     public static String address;
 
-    private MapView mMap;
+    private final MapView mMap;
 
     public SpoofingPlaceInfo(MapView mMap){
         this.mMap = mMap;

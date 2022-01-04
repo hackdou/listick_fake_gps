@@ -23,7 +23,6 @@ public class AppPreferences {
     public static final String TRAFFIC_SIDE = "traffic_side";
 
     public static int getUpdatesDelay(@NonNull Context context){
-
         return (int) (Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(context).getString(ListickApp.GPS_UPDATES_DELAY, String.valueOf(1))) * 1000);
     }
     public static boolean getBrakeAtTurning(@NonNull Context context){
@@ -34,9 +33,6 @@ public class AppPreferences {
     }
     public static int getTrafficSide(@NonNull Context context){
         return Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString(TRAFFIC_SIDE, String.valueOf(RIGHT_HAND_TRAFFIC)));
-    }
-    static boolean getKeepAtCenter(@NonNull Context context){
-       return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(ListickApp.KEEP_AT_CENTER, false);
     }
     public static boolean getLocationError(@NonNull Context context){
        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("location_error", true);

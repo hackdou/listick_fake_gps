@@ -3,7 +3,6 @@ package project.listick.fakegps.UI;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;

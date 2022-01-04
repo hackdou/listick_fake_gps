@@ -37,7 +37,7 @@ public class PermissionsPresenter implements Presenter {
 
     @Override
     public void onPermissionDenied() {
-        mUserInterface.setButtonError();
+        mUserInterface.showErrorOnButton();
     }
 
     private void requestPermissions() {

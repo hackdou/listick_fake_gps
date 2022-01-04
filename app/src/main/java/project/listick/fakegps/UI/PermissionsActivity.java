@@ -1,9 +1,7 @@
 package project.listick.fakegps.UI;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -12,6 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import project.listick.fakegps.Contract.PermissionsImpl;
 import project.listick.fakegps.OnSingleClickListener;
@@ -30,8 +29,7 @@ public class PermissionsActivity extends Activity implements PermissionsImpl.UI 
 
     @Override
     public void onBackPressed() {
-        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis())
-        {
+        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
             finishAffinity();
             return;
         }
@@ -71,8 +69,8 @@ public class PermissionsActivity extends Activity implements PermissionsImpl.UI 
     }
 
     @Override
-    public void setButtonError() {
-        mRequestPermissions.setBackground(getDrawable(R.drawable.uisearchbar_error));
+    public void showErrorOnButton() {
+        mRequestPermissions.setBackground(ContextCompat.getDrawable(this, R.drawable.uisearchbar_error));
         mRequestPermissions.startAnimation(AnimationUtils.loadAnimation(this, R.anim.attenuation));
         mRequestPermissions.setTextColor(getColor(R.color.white));
 
@@ -85,7 +83,7 @@ public class PermissionsActivity extends Activity implements PermissionsImpl.UI 
 
             @Override
             public void onFinish() {
-                mRequestPermissions.setBackground(getDrawable(R.drawable.uisearchbar));
+                mRequestPermissions.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.uisearchbar));
 
                 mRequestPermissions.setTextColor(getColor(R.color.uisearch_textcolor));
 

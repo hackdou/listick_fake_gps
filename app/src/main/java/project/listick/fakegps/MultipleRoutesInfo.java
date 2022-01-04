@@ -33,7 +33,6 @@ public class MultipleRoutesInfo implements Parcelable {
     }
 
     MultipleRoutesInfo(Parcel in) {
-        //in.readList(mRoute, GeoPoint.class.getClassLoader());
         mRoute = (ArrayList<GeoPoint>) in.readSerializable();
         mPauseSeconds = in.readInt();
         mSpeed = in.readInt();

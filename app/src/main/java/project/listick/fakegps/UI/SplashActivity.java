@@ -2,7 +2,6 @@ package project.listick.fakegps.UI;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Debug;
 
 import project.listick.fakegps.Contract.SplashImpl;
 import project.listick.fakegps.Presenter.SplashPresenter;

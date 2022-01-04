@@ -20,8 +20,4 @@ public class ListickApp {
     public static final String LONGITUDE = "longitude";
 
     public static final String ZOOM = "zoom";
-
-    public static final String VERSION_NAME = "2.4";
-
-    public static final String KEEP_AT_CENTER = "keep_at_center";
 }

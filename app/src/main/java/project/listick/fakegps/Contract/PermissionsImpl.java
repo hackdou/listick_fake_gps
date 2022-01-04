@@ -13,7 +13,7 @@ public interface PermissionsImpl {
     }
 
     interface UI {
-        void setButtonError();
+        void showErrorOnButton();
     }
 
 }

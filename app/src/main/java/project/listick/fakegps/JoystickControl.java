@@ -31,6 +31,15 @@ public class JoystickControl implements View.OnTouchListener {
 
     JoystickControl(){
         this.handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (fingerHold)
+                    mListener.onJoystickMoved(direction, strength, angle);
+
+                handler.postDelayed(this, 20);
+            }
+        };
         Thread joystickThread = new Thread(runnable);
         joystickThread.start();
     }
@@ -101,15 +110,5 @@ public class JoystickControl implements View.OnTouchListener {
 
         return (int) Math.toDegrees(Math.atan2(dY, dX));
     }
-
-    private Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            if (fingerHold)
-                mListener.onJoystickMoved(direction, strength, angle);
-
-            handler.postDelayed(this, 20);
-        }
-    };
 
 }

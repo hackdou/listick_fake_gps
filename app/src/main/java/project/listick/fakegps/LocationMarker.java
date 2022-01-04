@@ -18,27 +18,24 @@ import org.osmdroid.views.overlay.Overlay;
 public class LocationMarker extends Overlay {
 
     private GeoPoint geoPoint;
-    private Point mDrawPixel = new Point();
+    private final Point mDrawPixel = new Point();
     private Bitmap bitmap;
 
     private Bitmap mFixedIcon;
     private Bitmap mRouteIcon;
 
     public LocationMarker() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mFixedIcon = ImageUtils.getBitmapFromVectorDrawable(R.drawable.ic_vector_dot);
-                mRouteIcon = ImageUtils.getBitmapFromVectorDrawable(R.drawable.ic_dot_route);
+        new Handler().postDelayed(() -> {
+            mFixedIcon = ImageUtils.getBitmapFromVectorDrawable(R.drawable.ic_vector_dot);
+            mRouteIcon = ImageUtils.getBitmapFromVectorDrawable(R.drawable.ic_dot_route);
 
-                int iconSize = (int) ImageUtils.convertDpToPixel(36);
+            int iconSize = (int) ImageUtils.convertDpToPixel(36);
 
-                mFixedIcon = Bitmap.createScaledBitmap(mFixedIcon, iconSize, iconSize, true);
-                mRouteIcon = Bitmap.createScaledBitmap(mRouteIcon, iconSize, iconSize, true);
+            mFixedIcon = Bitmap.createScaledBitmap(mFixedIcon, iconSize, iconSize, true);
+            mRouteIcon = Bitmap.createScaledBitmap(mRouteIcon, iconSize, iconSize, true);
 
-                bitmap = mFixedIcon;
+            bitmap = mFixedIcon;
 
-            }
         }, 1000);
 
     }
@@ -51,14 +48,9 @@ public class LocationMarker extends Overlay {
         Matrix matrix = new Matrix();
         matrix.postRotate(bearing);
 
-        // TODO: ROUTE_ICON
-        //bitmap = (SpoofingPlaceInfo.isRoute) ? mRouteIcon : mFixedIcon;
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                bitmap = mRouteIcon;
-                bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-            }
+        new Handler().postDelayed(() -> {
+            bitmap = mRouteIcon;
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
         }, 1000);
 
     }

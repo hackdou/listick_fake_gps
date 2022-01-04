@@ -1,5 +1,7 @@
 package project.listick.fakegps;
 
+import static android.content.Context.WINDOW_SERVICE;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,8 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import project.listick.fakegps.Interfaces.IJoystickListener;
-
-import static android.content.Context.WINDOW_SERVICE;
 
 public class JoystickOverlay {
 
@@ -34,8 +34,6 @@ public class JoystickOverlay {
         this.context = context;
         this.mListener = listener;
     }
-
-
 
     @SuppressLint({"ClickableViewAccessibility", "InflateParams"})
     public void drawOverlay(){

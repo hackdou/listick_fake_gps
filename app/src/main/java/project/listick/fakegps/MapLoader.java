@@ -27,7 +27,7 @@ public class MapLoader {
     public static final double OPTIMIZED_ZOOM_LVL = 17d;
     public static final double MIN_ZOOM_LVL = 15d;
 
-    private Context mContext;
+    private final Context mContext;
 
     public MapLoader(Context context) {
         this.mContext = context;
@@ -42,7 +42,6 @@ public class MapLoader {
         map.setMultiTouchControls(true);
 
         map.setTileSource(TileSourceFactory.MAPNIK);
-
 
         if (AppPreferences.getMapTileProvider(mContext) == WIKIMEDIA_TILES) {
             map.setTileSource(new XYTileSource("Wikimedia",

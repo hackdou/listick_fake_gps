@@ -20,8 +20,6 @@ import com.google.android.gms.location.LocationServices;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
-import project.listick.fakegps.Services.RouteSpooferService;
-
 /*
  * Created by LittleAngry on 06.01.19 (macOS 10.12)
  * */
@@ -65,10 +63,7 @@ public class CurrentLocation implements LocationListener, GoogleApiClient.OnConn
         this.location = location;
         GeoPoint currentLocation = new GeoPoint(location.getLatitude(), location.getLongitude());
 
-        mMyLocationPoint.setMyLocationPoint(mapView, currentLocation, location.getAccuracy(), location.getBearing());
-
-        if (PermissionManager.isServiceRunning(context, RouteSpooferService.class) && AppPreferences.getKeepAtCenter(context))
-                mapView.getController().animateTo(new GeoPoint(location.getLatitude() + 0.0025, location.getLongitude()));
+        mMyLocationPoint.updateMyLocationPoint(mapView, currentLocation, location.getAccuracy(), location.getBearing());
     }
 
     @Override

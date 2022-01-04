@@ -19,19 +19,19 @@ import project.listick.fakegps.Enumerations.ERouteTransport;
  * */
 public class BuildRoute extends AsyncTask<Void, Void, Void> {
 
-    private double sourceLat;
-    private double sourceLong;
-    private double destLat;
-    private double destLong;
+    private final double sourceLat;
+    private final double sourceLong;
+    private final double destLat;
+    private final double destLong;
     public double distance;
 
     private ArrayList<GeoPoint> geoPoints;
-    private EDirectionService directionService;
-    private ERouteTransport transport;
-    private WeakReference<Context> mContext;
+    private final EDirectionService directionService;
+    private final ERouteTransport transport;
+    private final WeakReference<Context> mContext;
     private WeakReference<View> mProgressDialog;
-    private WeakReference<View> mView;
-    private BuildRouteListener mListener;
+    private final WeakReference<View> mView;
+    private final BuildRouteListener mListener;
 
     public interface BuildRouteListener {
         void onRouteBuilt(ArrayList<GeoPoint> points, double sourceLat, double sourceLong, double destLat, double destLong, double distance, ERouteTransport transport);

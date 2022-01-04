@@ -1,27 +1,25 @@
 package project.listick.fakegps.UI;
 
+import static project.listick.fakegps.ROMUtils.MIUI;
+import static project.listick.fakegps.ROMUtils.ONEUI;
+
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import project.listick.fakegps.OnSingleClickListener;
 import project.listick.fakegps.PermissionManager;
 import project.listick.fakegps.Presenter.MockLocationPermissionPresenter;
 import project.listick.fakegps.R;
 import project.listick.fakegps.ROMUtils;
-
-import static project.listick.fakegps.ROMUtils.MIUI;
-import static project.listick.fakegps.ROMUtils.ONEUI;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class MockLocationPermissionActivity extends Activity {
 

@@ -23,7 +23,7 @@ public class MyLocationPoint {
         mAccuracyPolygon.setInfoWindow(null);
     }
 
-    public void setMyLocationPoint(MapView mapView, GeoPoint myLocationPoint, float accuracy, float bearing) {
+    public void updateMyLocationPoint(MapView mapView, GeoPoint myLocationPoint, float accuracy, float bearing) {
         mapView.getOverlayManager().remove(mMarker);
         mapView.getOverlayManager().remove(mAccuracyPolygon);
 

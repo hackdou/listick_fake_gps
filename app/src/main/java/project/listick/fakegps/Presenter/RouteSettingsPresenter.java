@@ -12,13 +12,13 @@ import android.util.Log;
 import project.listick.fakegps.API.LFGSimpleApi;
 import project.listick.fakegps.AppPreferences;
 import project.listick.fakegps.Contract.RouteSettingsImpl;
-import project.listick.fakegps.Services.FixedSpooferService;
-import project.listick.fakegps.Services.ISpooferService;
-import project.listick.fakegps.Services.RouteSpooferService;
 import project.listick.fakegps.FakeGPSApplication;
 import project.listick.fakegps.ListickApp;
 import project.listick.fakegps.MultipleRoutesInfo;
 import project.listick.fakegps.RouteManager;
+import project.listick.fakegps.Services.FixedSpooferService;
+import project.listick.fakegps.Services.ISpooferService;
+import project.listick.fakegps.Services.RouteSpooferService;
 import project.listick.fakegps.SpoofingPlaceInfo;
 import project.listick.fakegps.UI.SettingsActivity;
 
@@ -26,6 +26,8 @@ import project.listick.fakegps.UI.SettingsActivity;
  * Created by LittleAngry on 09.01.19 (macOS 10.12)
  * */
 public class RouteSettingsPresenter implements RouteSettingsImpl.Presenter {
+
+    public static final String TAG = RouteSettingsPresenter.class.getName();
 
     public static final int ANOTHER_ROUTE_ADDED = 7;
 
@@ -69,7 +71,7 @@ public class RouteSettingsPresenter implements RouteSettingsImpl.Presenter {
             if (sService != null)
                 FakeGPSApplication.getAppContext().unbindService(mServiceConnection);
         } catch (IllegalArgumentException e) {
-            Log.e(ListickApp.VERSION_NAME, null, e);
+            Log.e(TAG, null, e);
         }
     }
 

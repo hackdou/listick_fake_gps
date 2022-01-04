@@ -2,7 +2,6 @@ package project.listick.fakegps.UI;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import project.listick.fakegps.FakeGPSApplication;
-import project.listick.fakegps.Interfaces.EditTextDialogImpl;
 import project.listick.fakegps.OnSingleClickListener;
 import project.listick.fakegps.R;
 

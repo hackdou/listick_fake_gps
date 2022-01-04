@@ -58,6 +58,7 @@ public interface MapsImpl {
         void handlePause();
         void onAddMoreRoute(ActivityOptionsCompat uiOptions);
         void changePoint();
+
     }
 
     interface ModelImpl {
