@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="38dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginEnd="38dp"
             android:layout_below="@id/drag">
 
             <TextView
@@ -252,7 +252,7 @@
                 android:drawableStart="@drawable/ic_baseline_road"
                 android:drawablePadding="5dp"
                 android:padding="@dimen/speed_margin"
-                android:text=" 0/0"
+                android:text="0/0"
                 android:textColor="@color/uicolor_text_high"
                 android:textSize="@dimen/speed_text_size" />
         </RelativeLayout>
