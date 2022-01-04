@@ -517,6 +517,8 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
 
     @Override
     public void removeRoute() {
+        if (RouteManager.routes == null || RouteManager.routes.size() == 0)
+            return;
 
         while (RouteManager.routes.size() >= 2)
             removeLatestRoute();
@@ -781,8 +783,6 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
     }
 
     private void removeRouteMarkers(int routePosition) {
-        if (!MainServiceControl.isRouteSpoofingServiceRunning(mContext))
-            return;
         OriginAndDestMarker markers = mMarkerList.get(routePosition);
         mMarkerList.remove(markers);
         mMap.getOverlays().remove(markers.origin);
