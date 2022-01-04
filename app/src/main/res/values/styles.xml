@@ -1,7 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <style name="E2ETransparentTheme" parent="AppTheme">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/black</item>
+    </style>
+
     <style name="AppTheme" parent="LightTheme">
-        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/black</item>
         <item name="android:statusBarColor">@color/app_system_bars</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
@@ -13,10 +18,10 @@
         <item name="backgroundColor">@color/white</item>
     </style>
 
-    <style name="ClearBars" parent="AppTheme">
+    <style name="E2ETheme" parent="AppTheme">
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor">@color/app_system_bars</item>
-        <item name="android:navigationBarColor">@color/app_system_bars</item>
+        <item name="android:navigationBarColor">@color/black</item>
     </style>
 
     <style name="Divider">

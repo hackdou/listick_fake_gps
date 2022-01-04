@@ -38,7 +38,7 @@
             android:process=":joystickservice"/>
 
         <activity android:name=".UI.JoystickActivity"
-            android:theme="@style/ClearBars"
+            android:theme="@style/E2ETheme"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".UI.MapsActivity"
@@ -50,31 +50,27 @@
         </activity>
 
         <activity
-            android:name=".UI.AboutActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/ClearBars"/>
-        <activity
             android:name=".UI.SelectPointActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/transparent_bars"/>
+            android:theme="@style/E2ETransparentTheme"/>
         <activity
             android:name=".UI.PermissionsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/ClearBars"/>
+            android:theme="@style/E2ETheme"/>
         <activity
             android:name=".UI.MockLocationPermissionActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/ClearBars"/>
+            android:theme="@style/E2ETheme"/>
         <activity
             android:name=".UI.SearchActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/ClearBars"
+            android:theme="@style/E2ETheme"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".UI.RouteSettingsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"
-            android:theme="@style/ClearBars"/>
+            android:theme="@style/E2ETheme"/>
 
         <service
             android:name=".Services.RouteSpooferService"
@@ -100,7 +96,7 @@
         <activity
             android:name=".UI.BookmarksActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/ClearBars" />
+            android:theme="@style/E2ETheme" />
     </application>
 
 </manifest>

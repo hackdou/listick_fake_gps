@@ -12,7 +12,7 @@
         <item name="backgroundColor">@color/black</item>
     </style>
 
-    <style name="ClearBars" parent="AppTheme">
+    <style name="E2ETheme" parent="AppTheme">
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:statusBarColor">@color/app_system_bars</item>
         <item name="android:navigationBarColor">@color/app_system_bars</item>

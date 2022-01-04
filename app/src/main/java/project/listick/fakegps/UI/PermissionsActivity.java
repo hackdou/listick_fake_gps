@@ -6,14 +6,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.provider.Settings;
 import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+
+import com.google.android.material.button.MaterialButton;
 
 import project.listick.fakegps.Contract.PermissionsImpl;
 import project.listick.fakegps.OnSingleClickListener;
@@ -28,7 +27,7 @@ public class PermissionsActivity extends Activity implements PermissionsImpl.UI 
 
 
     private PermissionsPresenter presenter;
-    private Button mRequestPermissions;
+    private MaterialButton mRequestPermissions;
 
     @Override
     public void onBackPressed() {
@@ -74,33 +73,13 @@ public class PermissionsActivity extends Activity implements PermissionsImpl.UI 
 
     @Override
     public void showErrorOnButton() {
-        mRequestPermissions.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
-        mRequestPermissions.setTextColor(getColor(R.color.black));
-        mRequestPermissions.setBackgroundColor(getColor(R.color.red_tonal_button));
-
-
-        CountDownTimer timer = new CountDownTimer(800, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-
+        UIEffects.Button.attachErrorWithShake(this, mRequestPermissions, () -> {
+            if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
             }
-
-            @Override
-            public void onFinish() {
-                mRequestPermissions.setBackgroundColor(getColor(R.color.primaryColor));
-                mRequestPermissions.clearAnimation();
-                mRequestPermissions.startAnimation(AnimationUtils.loadAnimation(PermissionsActivity.this, R.anim.attenuation));
-                mRequestPermissions.setTextColor(getColor(R.color.white));
-
-                if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    Uri uri = Uri.fromParts("package", getPackageName(), null);
-                    intent.setData(uri);
-                    startActivity(intent);
-                }
-
-            }
-        };
-        timer.start();
+        });
     }
 }

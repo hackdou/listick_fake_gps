@@ -145,17 +145,17 @@
 
         <TextView
             android:id="@+id/auto_elevation"
+            style="@style/uisearchview"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:drawableStart="@drawable/ic_terrain"
-            style="@style/uisearchview"
             android:layout_marginStart="2dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
-            android:textColor="@color/material_green_600"
-            android:text="@string/auto"
-            android:textStyle="bold"
+            android:drawableStart="@drawable/ic_terrain"
             android:gravity="center_vertical"
+            android:text="@string/auto"
+            android:textColor="@color/material_green_600"
+            android:textStyle="bold"
             android:visibility="gone" />
 
         <LinearLayout
@@ -177,6 +177,7 @@
                     style="@style/uisearchview"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    android:digits="0123456789."
                     android:drawableStart="@drawable/ic_terrain"
                     android:hint="@string/altitude"
                     android:inputType="number" />
@@ -191,6 +192,7 @@
                     android:textSize="12sp" />
 
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
@@ -204,6 +206,7 @@
                     style="@style/uisearchview"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    android:digits="0123456789.,"
                     android:drawableStart="@drawable/plus_minus"
                     android:hint="@string/difference"
                     android:inputType="number" />
@@ -219,6 +222,7 @@
 
             </RelativeLayout>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/pause_at_starting"
             android:layout_width="match_parent"
