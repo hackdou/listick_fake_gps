@@ -68,7 +68,7 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
 
     private MapsPresenter mPresenter;
 
-    private RelativeLayout mSearchLayout;
+    private TextView mSearchLayout;
     private MaterialButton mStopContainer;
     private CardView mActiveRouteLayout;
     private MaterialButton mPauseContainer;
@@ -119,7 +119,7 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
 
         mRemoveRoute = findViewById(R.id.remote_route);
 
-        mSearchLayout = findViewById(R.id.where_to_container);
+        mSearchLayout = findViewById(R.id.where_to);
         mWhereTo = findViewById(R.id.where_to);
         mActiveRouteLayout = findViewById(R.id.active_route_info);
         mMenuIcon = findViewById(R.id.settings);

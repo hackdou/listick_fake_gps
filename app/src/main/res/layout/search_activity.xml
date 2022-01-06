@@ -29,14 +29,9 @@
                 android:id="@+id/arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_back" />
+                android:src="@drawable/ic_arrow_back"
+                android:padding="5dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="3dp"
-                android:text="@string/back"
-                android:textColor="@color/uicolor_text_medium" />
         </LinearLayout>
 
         <TextView
@@ -62,7 +57,7 @@
         android:id="@+id/origin"
         style="@style/uisearchview"
         android:layout_width="match_parent"
-        android:layout_height="42dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/header"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
@@ -77,10 +72,10 @@
         android:id="@+id/destination"
         style="@style/uisearchview"
         android:layout_width="match_parent"
-        android:layout_height="42dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/origin"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="11dp"
         android:layout_marginEnd="20dp"
         android:drawableStart="@drawable/dest_marker"
         android:hint="@string/destination"
