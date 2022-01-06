@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/spoofing_preferences_title">
 
         <SwitchPreference
@@ -26,21 +25,21 @@
             android:icon="@drawable/ic_ruler"
             android:key="standart_unit"
             android:summary="Kilometers"
-            android:title="Units"
+            android:title="@string/units_title"
             android:entries="@array/unitList"
             android:entryValues="@array/unit_values"/>
         <DropDownPreference
             android:key="default_tile_provider"
             android:icon="@drawable/ic_map_black_24dp"
             android:summary="Default (OSM)"
-            android:title="Map tiles"
+            android:title="@string/map_tiles_title"
             android:entries="@array/map_tiles"
             android:entryValues="@array/map_tiles_value"/>
         <DropDownPreference
             android:icon="@drawable/ic_baseline_road"
             android:key="traffic_side"
             android:summary="Right-hand traffic"
-            android:title="Traffic side"
+            android:title="@string/traffic_side_title"
             android:entries="@array/trafficSide"
             android:entryValues="@array/traffic_values"/>
     </PreferenceCategory>

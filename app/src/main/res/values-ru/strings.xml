@@ -177,5 +177,8 @@
     <string name="measurement_title">Измерения</string>
     <string name="accuracy_title">Точность</string>
     <string name="enter_valid_value">Введите верное значение</string>
+    <string name="units_title">Единицы измерения</string>
+    <string name="map_tiles_title">Карты</string>
+    <string name="traffic_side_title">Сторона движения</string>
 
 </resources>

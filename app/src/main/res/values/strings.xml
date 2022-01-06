@@ -196,5 +196,8 @@
     <string name="measurement_title">Measurement</string>
     <string name="accuracy_title">Accuracy</string>
     <string name="enter_valid_value">Please enter a valid value</string>
+    <string name="units_title">Units</string>
+    <string name="map_tiles_title">Map tiles</string>
+    <string name="traffic_side_title">Traffic side</string>
 
 </resources>
