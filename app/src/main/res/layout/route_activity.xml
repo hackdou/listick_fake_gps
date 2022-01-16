@@ -29,8 +29,8 @@
                 android:id="@+id/arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_back"
-                android:padding="5dp"/>
+                android:padding="5dp"
+                android:src="@drawable/ic_arrow_back" />
         </LinearLayout>
 
         <TextView
@@ -181,7 +181,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_margin="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
                     android:text="m."
                     android:textSize="12sp" />
 
@@ -210,7 +213,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_margin="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="20dp"
                     android:text="m."
                     android:textSize="12dp" />
 
@@ -224,7 +229,7 @@
             android:layout_below="@id/elevation_container"
             android:layout_marginTop="10dp"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -248,6 +253,49 @@
 
                     <TextView
                         android:id="@+id/parking_time"
+                        style="@style/uisearchview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:drawableStart="@drawable/ic_baseline_timer_24"
+                        android:gravity="center"
+                        android:hint="01:00 s."
+                        android:inputType="number" />
+                </RelativeLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/delay_at_the_last_point"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/elevation_container"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:text="@string/delay_at_the_last_point"
+                android:textColor="@color/uicolor_text_medium" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/datlp_timepicker"
                         style="@style/uisearchview"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
@@ -290,7 +338,7 @@
                 android:backgroundTint="@color/primaryColor"
                 android:text="@string/continue_text"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/material_button_text_color"
                 android:textSize="16sp" />
         </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>

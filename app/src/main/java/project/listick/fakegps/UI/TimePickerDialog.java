@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Locale;
+
 import project.listick.fakegps.FakeGPSApplication;
 import project.listick.fakegps.OnSingleClickListener;
 import project.listick.fakegps.R;
@@ -19,7 +21,7 @@ import project.listick.fakegps.R;
 public class TimePickerDialog {
 
     public interface TimePickerImpl {
-        void onTimePicked(int minutes, int seconds);
+        void onTimePicked(int minutes, int seconds, String format);
     }
 
     private Dialog mDialog;
@@ -79,7 +81,20 @@ public class TimePickerDialog {
                 }
 
                 hideKeyboard();
-                mListener.onTimePicked(minutes, seconds);
+
+
+                String format = String.format(Locale.ENGLISH, "%d:%d", minutes, seconds);
+                if (minutes < 9)
+                    format = String.format(Locale.ENGLISH, "0%d:%d", minutes, seconds);
+
+                if (seconds < 9)
+                    format = String.format(Locale.ENGLISH, "%d:0%d", minutes, seconds);
+
+                if (minutes < 9 && seconds < 9)
+                    format = String.format(Locale.ENGLISH, "0%d:0%d", minutes, seconds);
+
+
+                mListener.onTimePicked(minutes, seconds, format);
                 mDialog.cancel();
             }
         });

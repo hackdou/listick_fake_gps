@@ -1,7 +1,5 @@
 package project.listick.fakegps.Contract;
 
-import android.content.SharedPreferences;
-
 /*
  * Created by LittleAngry on 09.01.19 (macOS 10.12)
  * */
@@ -22,7 +20,9 @@ public interface RouteSettingsImpl {
         void onAltitudeDetermined(boolean success, boolean isRoute);
         void setFixedMode();
         void addMoreRoute();
-        int getTimerMinutes();
-        int getTimerSeconds();
+        int getOriginTimerMinutes();
+        int getOriginTimerSeconds();
+        int getDestTimerMinutes();
+        int getDestTimerSeconds();
     }
 }

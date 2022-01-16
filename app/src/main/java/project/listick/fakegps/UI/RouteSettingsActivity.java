@@ -1,9 +1,7 @@
 package project.listick.fakegps.UI;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -19,8 +17,6 @@ import androidx.fragment.app.FragmentActivity;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.button.MaterialButton;
 
-import java.util.Locale;
-
 import project.listick.fakegps.AppPreferences;
 import project.listick.fakegps.Contract.RouteSettingsImpl;
 import project.listick.fakegps.ListickApp;
@@ -34,6 +30,7 @@ import project.listick.fakegps.R;
 public class RouteSettingsActivity extends FragmentActivity implements RouteSettingsImpl.UI {
 
     private TextView mPauseAtStartingTimer;
+    private TextView mLatestPointDelayTimer;
     private EditText speedField;
     private EditText differenceField;
 
@@ -44,10 +41,14 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
     private CheckBox mClosedRoute;
 
     private View mPauseAtStartingContainer;
+    private View mLatestPointDelayContainer;
     private ShimmerFrameLayout mDetectingAltitude;
 
-    private int mTimerMinutes;
-    private int mTimerSeconds;
+    private int mOriginTimerMinutes;
+    private int mOriginTimerSeconds;
+
+    private int mDestTimerMinutes;
+    private int mDestTimerSeconds;
 
     public static void startActivity(Activity activity, double latitude, double longitude, double distance, boolean isRoute, boolean addMoreRoute, int requestCode) {
         activity.startActivityForResult(new Intent(activity, RouteSettingsActivity.class)
@@ -72,8 +73,13 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
         elevationDiff = findViewById(R.id.elevation_different);
         mClosedRoute = findViewById(R.id.closed_route);
         mDetectingAltitude = findViewById(R.id.detecting_altitude);
+
+        mLatestPointDelayContainer = findViewById(R.id.delay_at_the_last_point);
+        mLatestPointDelayTimer = findViewById(R.id.datlp_timepicker);
+
         mPauseAtStartingContainer = findViewById(R.id.pause_at_starting);
         mPauseAtStartingTimer = findViewById(R.id.parking_time);
+
 
         mDetectingAltitude.hideShimmer();
 
@@ -89,35 +95,37 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
         mContinue.setOnClickListener(new OnSingleClickListener() {
             @Override
             public void onSingleClick(View v) {
-                    if (!speedField.getText().toString().isEmpty() && TextUtils.isDigitsOnly(speedField.getText().toString()) &&
-                            !differenceField.getText().toString().isEmpty() && TextUtils.isDigitsOnly(differenceField.getText().toString())) {
-                        String elevationStr = RouteSettingsActivity.this.elevation.getText().toString();
-                        String elevationDiffStr = RouteSettingsActivity.this.elevationDiff.getText().toString();
+                if (!speedField.getText().toString().isEmpty() && TextUtils.isDigitsOnly(speedField.getText().toString()) &&
+                        !differenceField.getText().toString().isEmpty() && TextUtils.isDigitsOnly(differenceField.getText().toString())) {
+                    String elevationStr = RouteSettingsActivity.this.elevation.getText().toString();
+                    String elevationDiffStr = RouteSettingsActivity.this.elevationDiff.getText().toString();
 
-                        float elevation = 0;
-                        float elevationDiff = 0;
+                    float elevation = 0;
+                    float elevationDiff = 0;
 
-                        if (!elevationStr.isEmpty()) {
-                            try {
-                                elevation = Float.parseFloat(elevationStr);
-                            } catch (NumberFormatException e) {
-                                UIEffects.TextView.attachErrorWithShake(RouteSettingsActivity.this, RouteSettingsActivity.this.elevation, () -> { });
-                                return;
-                            }
+                    if (!elevationStr.isEmpty()) {
+                        try {
+                            elevation = Float.parseFloat(elevationStr);
+                        } catch (NumberFormatException e) {
+                            UIEffects.TextView.attachErrorWithShake(RouteSettingsActivity.this, RouteSettingsActivity.this.elevation, () -> {
+                            });
+                            return;
                         }
+                    }
 
-                        if (!elevationDiffStr.isEmpty()) {
-                            try {
+                    if (!elevationDiffStr.isEmpty()) {
+                        try {
                             elevationDiff = Float.parseFloat(elevationDiffStr);
-                            } catch (NumberFormatException e) {
-                                UIEffects.TextView.attachErrorWithShake(RouteSettingsActivity.this, RouteSettingsActivity.this.elevationDiff, () -> { });
-                                return;
-                            }
+                        } catch (NumberFormatException e) {
+                            UIEffects.TextView.attachErrorWithShake(RouteSettingsActivity.this, RouteSettingsActivity.this.elevationDiff, () -> {
+                            });
+                            return;
+                        }
                     }
-                        presenter.onContinueClick(Integer.parseInt(speedField.getText().toString()), Integer.parseInt(differenceField.getText().toString()), elevation, elevationDiff, mClosedRoute.isChecked());
-                    }
+                    presenter.onContinueClick(Integer.parseInt(speedField.getText().toString()), Integer.parseInt(differenceField.getText().toString()), elevation, elevationDiff, mClosedRoute.isChecked());
+                }
 
-                    presenter.saveElevation(Float.parseFloat(elevation.getText().toString()), Float.parseFloat(elevationDiff.getText().toString()));
+                presenter.saveElevation(Float.parseFloat(elevation.getText().toString()), Float.parseFloat(elevationDiff.getText().toString()));
 
 
             }
@@ -129,6 +137,37 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
                 presenter.onCancelClick();
             }
         });
+
+        // Origin timer
+        mPauseAtStartingTimer.setOnClickListener(view -> {
+
+            TimePickerDialog tm = new TimePickerDialog(this, (minutes, seconds, format) -> {
+                mOriginTimerMinutes = minutes;
+                mOriginTimerSeconds = seconds;
+
+
+                mPauseAtStartingTimer.setText(format);
+
+            });
+            tm.show(getString(R.string.parking_time), getString(R.string.enter_parking_time));
+
+        });
+
+        // Dest timer
+        mLatestPointDelayTimer.setOnClickListener(view -> {
+
+            TimePickerDialog tm = new TimePickerDialog(this, (minutes, seconds, format) -> {
+                mDestTimerMinutes = minutes;
+                mDestTimerMinutes = seconds;
+
+                mLatestPointDelayTimer.setText(format);
+
+            });
+            tm.show(getString(R.string.delay_at_the_last_point), "");
+
+        });
+
+        mLatestPointDelayContainer.setVisibility(View.GONE);
 
         presenter.onActivityLoad();
     }
@@ -143,23 +182,11 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
         differenceField.setText(String.valueOf(difference));
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void pushDifferenceError() {
         Toast.makeText(this, R.string.difference_error, Toast.LENGTH_SHORT).show();
 
-        differenceField.setBackground(getDrawable(R.drawable.uisearchbar_error));
-        differenceField.startAnimation(AnimationUtils.loadAnimation(this, R.anim.attenuation));
-        differenceField.getCompoundDrawables()[0].setTint(Color.WHITE);
-        differenceField.setTextColor(getColor(R.color.white));
-        differenceField.setOnTouchListener((view, motionEvent) -> {
-            view.setBackground(getDrawable(R.drawable.uisearchbar));
-            differenceField.setTextColor(getColor(R.color.uisearch_textcolor));
-            differenceField.getCompoundDrawables()[0].setTint(getColor(R.color.uisearch_icon_tint));
-            view.startAnimation(AnimationUtils.loadAnimation(RouteSettingsActivity.this, R.anim.attenuation));
-            view.setOnTouchListener(null);
-            return false;
-        });
+        UIEffects.TextView.attachErrorWithShake(this, differenceField, () -> { });
     }
 
     @Override
@@ -203,44 +230,34 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
         activityTitle.setText(R.string.spoofing);
         speedContainer.setVisibility(View.GONE);
         mClosedRoute.setVisibility(View.GONE);
+
+        mPauseAtStartingContainer.setVisibility(View.GONE);
+        mLatestPointDelayContainer.setVisibility(View.GONE);
     }
 
     @Override
     public void addMoreRoute() {
         mClosedRoute.setVisibility(View.GONE);
-        mPauseAtStartingContainer.setVisibility(View.VISIBLE);
-        mPauseAtStartingTimer.setOnClickListener(view -> {
-
-            TimePickerDialog tm = new TimePickerDialog(this, (minutes, seconds) -> {
-                String format = String.format(Locale.ENGLISH, "%d:%d", minutes, seconds);
-                mTimerMinutes = minutes;
-                mTimerSeconds = seconds;
-
-                if (minutes < 9)
-                    format = String.format(Locale.ENGLISH, "0%d:%d", minutes, seconds);
-
-                if (seconds < 9)
-                    format = String.format(Locale.ENGLISH, "%d:0%d", minutes, seconds);
-
-                if (minutes < 9 && seconds < 9)
-                    format = String.format(Locale.ENGLISH, "0%d:0%d", minutes, seconds);
-
-                mPauseAtStartingTimer.setText(format);
-
-            });
-            tm.show(getString(R.string.parking_time), getString(R.string.enter_parking_time));
-
-        });
+        mLatestPointDelayContainer.setVisibility(View.GONE);
     }
 
     @Override
-    public int getTimerMinutes() {
-        return mTimerMinutes;
+    public int getOriginTimerMinutes() {
+        return mOriginTimerMinutes;
     }
 
     @Override
-    public int getTimerSeconds() {
-        return mTimerSeconds;
+    public int getOriginTimerSeconds() {
+        return mOriginTimerSeconds;
+    }
+    @Override
+    public int getDestTimerMinutes() {
+        return mDestTimerMinutes;
+    }
+
+    @Override
+    public int getDestTimerSeconds() {
+        return mDestTimerSeconds;
     }
 
 

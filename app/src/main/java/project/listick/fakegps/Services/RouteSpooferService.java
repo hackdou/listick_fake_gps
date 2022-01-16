@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.RemoteException;
 import android.os.SystemClock;
 import android.util.Log;
@@ -55,6 +56,8 @@ public class RouteSpooferService extends Service {
     private int mDefaultUnit;
     private int mTrafficSide;
 
+    private int mOriginDelay;
+    private int mDestDelay;
     private int mUpdatesDelay;
 
     private float mAccuracy;
@@ -71,6 +74,7 @@ public class RouteSpooferService extends Service {
     private boolean isMockLocationsEnabled;
     private boolean isSystemApp;
     private boolean isPaused;
+    private boolean waitingStart;
 
     private Intent mUpdateUI;
 
@@ -142,6 +146,9 @@ public class RouteSpooferService extends Service {
         mElevation = intent.getFloatExtra(RouteSettingsPresenter.ELEVATION, 197);
         mElevationDiff = intent.getFloatExtra(RouteSettingsPresenter.ELEVATION_DIFF, 4);
 
+        mOriginDelay = intent.getIntExtra("origin_timeout", 0);
+        waitingStart = mOriginDelay > 0;
+
         SourceData.totalDistance = mTotalDistance;
         SourceData.isClosedRoute = intent.getBooleanExtra(SpoofingPlaceInfo.CLOSED_ROUTE_MOTION_INVERT, false);
 
@@ -182,6 +189,12 @@ public class RouteSpooferService extends Service {
                     mainRouteThread.interrupt();
                     mHandler.removeCallbacks(mainRouteRunnable);
                 }
+
+                if (waitingStart)
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        waitingStart = false;
+                    }, mOriginDelay);
+
             }
 
             @Override
@@ -241,7 +254,7 @@ public class RouteSpooferService extends Service {
 
 
     Runnable mainRouteRunnable = new Runnable() {
-        private int arrayRunIndex;
+        private int arrayRunIndex = 0;
         private int arrayRunSpeed;
         private int brakeSpeed;
         private boolean isNeedBrake;
@@ -257,7 +270,7 @@ public class RouteSpooferService extends Service {
             if (mSpoofRoute == null || mSpoofRoute.isEmpty())
                 return;
 
-            if (!isPaused) arrayRunIndex += arrayRunSpeed;
+            if (!isPaused && !waitingStart) arrayRunIndex += arrayRunSpeed;
             if (arrayRunIndex >= mSpoofRoute.size() - 1) {
                 arrayRunIndex = mSpoofRoute.size() - 1;
                 if (mRouteSlice < mSlices.length - 1) {
@@ -381,7 +394,7 @@ public class RouteSpooferService extends Service {
                 routeInfo.altitude = altitude;
                 return routeInfo;
             } else {
-                if (!isPaused) {
+                if (!isPaused && !waitingStart) {
                     mPassedDistance += Geometry.distance(mSpoofRoute.get(arrayRunIndex - arrayRunSpeed).getLatitude(), mSpoofRoute.get(arrayRunIndex - arrayRunSpeed).getLongitude(),
                             mSpoofRoute.get(arrayRunIndex).getLatitude(), mSpoofRoute.get(arrayRunIndex).getLongitude(), mDefaultUnit);
                     updateUI(speed, mPassedDistance);

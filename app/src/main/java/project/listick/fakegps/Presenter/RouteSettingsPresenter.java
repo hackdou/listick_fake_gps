@@ -139,16 +139,18 @@ public class RouteSettingsPresenter implements RouteSettingsImpl.Presenter {
         int speedDiff = mSettingsPreferences.getInt(ListickApp.SPEED_DIFFERENCE, 0);
         int trafficSide = AppPreferences.getTrafficSide(mActivity);
 
+        int originMinutes = mUserInterface.getOriginTimerMinutes();
+        int originSeconds = mUserInterface.getOriginTimerSeconds();
+        int originTimeout = (originSeconds + originMinutes * 60) * 1000; // (convert to seconds) to ms
+
         if (mAddMoreRoutes) {
             MultipleRoutesInfo info = RouteManager.routes.get(RouteManager.getLatestElement());
 
             info.setSpeed(speed);
             info.setSpeedDiff(speedDiff);
 
-            int minutes = mUserInterface.getTimerMinutes();
-            int seconds = mUserInterface.getTimerSeconds();
 
-            info.setStartingPauseTime((seconds + minutes * 60) * 1000); // (convert to seconds) to ms
+            info.setStartingPauseTime(originTimeout);
 
             info.setElevation(elevation);
             info.setElevationDiff(elevationDiff);
@@ -157,6 +159,10 @@ public class RouteSettingsPresenter implements RouteSettingsImpl.Presenter {
             mActivity.finish();
             return;
         }
+
+        int dest_minutes = mUserInterface.getDestTimerMinutes();
+        int dest_seconds = mUserInterface.getDestTimerSeconds();
+        int destTimeout = (dest_seconds + dest_minutes * 60) * 1000; // (convert to seconds) to ms
 
         if (mIsRoute) {
             double distance = intent.getDoubleExtra(ListickApp.DISTANCE, Double.NaN);
@@ -179,6 +185,8 @@ public class RouteSettingsPresenter implements RouteSettingsImpl.Presenter {
                     .putExtra(ELEVATION_DIFF, elevationDiff)
                     .putExtra(SpoofingPlaceInfo.CLOSED_ROUTE_MOTION_INVERT, isClosedRoute)
                     .putExtra(SPEED_DIFF, speedDiff)
+                    .putExtra("origin_timeout", originTimeout)
+                    .putExtra("dest_timeout", destTimeout)
                     .putExtra(AppPreferences.TRAFFIC_SIDE, trafficSide)
                     .putExtra(RouteSpooferService.KEY_ACCURACY, accuracy)
                     .putExtra(RouteSpooferService.KEY_DEVIATION, deviation)
@@ -197,6 +205,8 @@ public class RouteSettingsPresenter implements RouteSettingsImpl.Presenter {
                     .putExtra(ListickApp.LATITUDE, latitude)
                     .putExtra(ListickApp.LONGITUDE, longitude)
                     .putExtra(ELEVATION, elevation)
+                    .putExtra("origin_timeout", originTimeout)
+                    .putExtra("dest_timeout", destTimeout)
                     .putExtra(ELEVATION_DIFF, elevationDiff));
         }
         mActivity.setResult(Activity.RESULT_OK);
