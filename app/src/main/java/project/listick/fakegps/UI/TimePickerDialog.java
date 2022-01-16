@@ -68,6 +68,11 @@ public class TimePickerDialog {
                 String s_minutes = et_minutes.getText().toString();
                 String s_seconds = et_seconds.getText().toString();
 
+                if (s_minutes.isEmpty())
+                    s_minutes = "0";
+                else if (s_seconds.isEmpty())
+                    s_seconds = "0";
+
                 int minutes = 0;
                 int seconds = 0;
                 if (!(s_minutes.isEmpty() || s_seconds.isEmpty())) {
