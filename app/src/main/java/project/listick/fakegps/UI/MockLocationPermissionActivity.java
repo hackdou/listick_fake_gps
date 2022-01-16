@@ -23,23 +23,18 @@ import project.listick.fakegps.ROMUtils;
 
 public class MockLocationPermissionActivity extends Activity {
 
+    public static final int ML_GRANTED_REQUEST_CODE = 8;
+
     private boolean isInitialized = false;
     private MockLocationPermissionPresenter presenter;
-    private Button developerSettings;
-    private TextView mlActivatedText;
-    private TextView ignore;
-
-    private View.OnClickListener finish;
 
     @Override
     protected void onResume() {
         super.onResume();
 
         if (isInitialized && PermissionManager.isMockLocationsEnabled(this)) {
-            developerSettings.setText(R.string.continue_text);
-            ignore.setVisibility(View.INVISIBLE);
-            mlActivatedText.setVisibility(View.VISIBLE);
-            developerSettings.setOnClickListener(finish);
+            setResult(RESULT_OK);
+            finish();
         }
     }
 
@@ -50,11 +45,10 @@ public class MockLocationPermissionActivity extends Activity {
         isInitialized = true;
 
         presenter = new MockLocationPermissionPresenter(this);
-        mlActivatedText = findViewById(R.id.ml_activated_text);
-        ignore = findViewById(R.id.ignore);
-        developerSettings = findViewById(R.id.btn_continue);
+        TextView ignore = findViewById(R.id.ignore);
+        Button developerSettings = findViewById(R.id.btn_continue);
 
-        finish = v -> presenter.onContinue();
+        View.OnClickListener finish = v -> presenter.onContinue();
 
         developerSettings.setOnClickListener(new OnSingleClickListener() {
             @Override

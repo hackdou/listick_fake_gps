@@ -395,8 +395,10 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
         if (PermissionManager.isMockLocationsEnabled(mContext) || PermissionManager.isSystemApp(mContext)) {
             LocationOperations loc = new LocationOperations();
             loc.startSpoofing(geoPoint, mDistance, mActivity, isRoute);
-        } else
-            mContext.startActivity(new Intent(mContext, MockLocationPermissionActivity.class));
+        } else {
+            mActivity.startActivityForResult(new Intent(mContext, MockLocationPermissionActivity.class), MockLocationPermissionActivity.ML_GRANTED_REQUEST_CODE);
+
+        }
     }
 
     @Override

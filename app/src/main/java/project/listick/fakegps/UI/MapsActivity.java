@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.Spanned;
@@ -101,7 +100,7 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
 
         mPresenter = new MapsPresenter(mMap, this);
 
-        RelativeLayout getLocation = findViewById(R.id.getlocation_container);
+        MaterialButton getLocation = findViewById(R.id.getlocation_container);
         RelativeLayout loading = findViewById(R.id.loading);
 
         mStopContainer = findViewById(R.id.stop_button);
@@ -211,20 +210,11 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
 
             int topInset = insets.getSystemWindowInsetTop();
             int bottomInset = insets.getSystemWindowInsetBottom();
-            boolean isGesturesEnabled = false;
 
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) getLocation.getLayoutParams();
             params.bottomMargin = bottomInset + params.bottomMargin;
             params = (ViewGroup.MarginLayoutParams) mMenuIcon.getLayoutParams();
             params.topMargin = topInset;
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                if (insets.getSystemGestureInsets().bottom != 0
-                        && insets.getSystemGestureInsets().left != 0
-                        && insets.getSystemGestureInsets().right != 0) {
-                    isGesturesEnabled = true;
-                }
-            }
 
             mBottomSheet.setPeekHeight(findViewById(R.id.search_layout).getMeasuredHeight() + bottomInset);
 
@@ -294,6 +284,10 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
             if (mPresenter != null)
                 mPresenter.onBookmarkResult(data, resultCode);
         }
+        if (requestCode == MockLocationPermissionActivity.ML_GRANTED_REQUEST_CODE && resultCode == RESULT_OK) {
+            if (mPresenter != null)
+                mPresenter.onSpoofClick(new GeoPoint(mMap.getMapCenter().getLatitude(), mMap.getMapCenter().getLongitude()));
+        }
 
         mMap.invalidate();
     }
@@ -335,7 +329,6 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
 
     @Override
     public void enableSpeedbar(int visibility) {
-        //mSpeedbarLayout.setVisibility(visibility);
         mSpeedInfo.setText("0 " + AppPreferences.getUnitName(this, AppPreferences.getStandartUnit(this)));
         mDistanceInfo.setText("0/0");
     }
