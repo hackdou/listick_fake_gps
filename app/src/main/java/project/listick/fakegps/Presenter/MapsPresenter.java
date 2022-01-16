@@ -326,7 +326,7 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
         mUserInterface.toggleEditButton(View.GONE);
         mUserInterface.enableStop(View.GONE);
         mUserInterface.lockSearchBar(false);
-
+        isRoute = false;
 
         removeRoute();
     }
