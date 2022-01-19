@@ -362,7 +362,7 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
         double latitude = latestRoute.get(latestRoute.size() - 1).getLatitude();
         double longitude = latestRoute.get(latestRoute.size() - 1).getLongitude();
 
-        mMap.getController().animateTo(new GeoPoint(latitude, longitude));
+        mMap.getController().animateTo(new GeoPoint(latitude, longitude), mMap.getZoomLevelDouble(), 500L);
 
         // use handler for finish animation
         new Handler().postDelayed(() -> SearchActivity.startActivity(mActivity, originAddress, latitude, longitude, true, uiOptions.toBundle()), 500);
