@@ -158,7 +158,7 @@
     <string name="edit">Редактировать</string>
     <string name="start_spoofing">Начать подмену</string>
     <string name="about_view_source_code"><![CDATA[Исходный код доступен на %1$s<br/>Присоединяйтесь к нашему %2$s каналу<br/>Пожалуйста помогите нам с переводом приложения. Подробнее на GitHub]]></string>
-    <string name="location_deviation_summary">Местоположение будет незначительно изменяться, если движение отсувствует</string>
+    <string name="location_deviation_summary">Местоположение будет незначительно изменяться, если движение отсутствует</string>
     <string name="auto_altitude_summary">Автоматическая подмены высоты при подмене местоположения</string>
     <string name="brake_at_turning_summary">Уменьшать скорость при повороте</string>
     <string name="spoofing_preferences_title">Параметры подмены</string>
