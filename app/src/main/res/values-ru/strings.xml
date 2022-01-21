@@ -40,7 +40,7 @@
     <string name="version">Версия</string>
     <string name="last_update">Последнее обновление</string>
     <string name="listick_description">Подмена Ваших координат с возможностью построения маршрутов.</string>
-    <string name="no_internet">Отсувствует соединение с интернетом</string>
+    <string name="no_internet">Отсутствует соединение с интернетом</string>
     <string name="building_route">Пожалуйста подождите. Построение маршрута…</string>
     <string name="failed_to_define_address">Не удалось определить адрес.</string>
     <string name="kiloabbr">км/ч</string>
