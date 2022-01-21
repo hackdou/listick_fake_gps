@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Listick Fake GPS</string>
-    <string name="title_activity_settings">Настройки</string>
     <string name="settings">Настройки</string>
     <string name="continue_text">Продолжить</string>
     <string name="permissions">Разрешения</string>
@@ -14,8 +13,8 @@
     <string name="Address">Адрес:</string>
     <string name="enter_value">Введите значение!</string>
     <string name="settings_of_accuracy">Точность</string>
-    <string name="enter_accuracy_value">Точность будет варьироваться.</string>
-    <string name="enter_updates_time_value">Разница времени в секундах.</string>
+    <string name="enter_accuracy_value">Точность будет незначительно изменяться</string>
+    <string name="enter_updates_time_value">Задержка обновления местоположения в секундах</string>
     <string name="accuracy_settings">Точность</string>
     <string name="gps_updates_delay_name">Задержка обновления</string>
     <string name="gps_updates_delay">Задержка обновления</string>
@@ -38,8 +37,6 @@
     <string name="speed">Скорость</string>
     <string name="difference">Разность</string>
     <string name="version">Версия</string>
-    <string name="last_update">Последнее обновление</string>
-    <string name="listick_description">Подмена Ваших координат с возможностью построения маршрутов.</string>
     <string name="no_internet">Отсутствует соединение с интернетом</string>
     <string name="building_route">Пожалуйста подождите. Построение маршрута…</string>
     <string name="failed_to_define_address">Не удалось определить адрес.</string>
@@ -47,9 +44,7 @@
     <string name="milesabbr">миль/ч</string>
     <string name="meterabbr">м/с</string>
     <string name="location">Местоположение</string>
-    <string name="location_perm_description">Для определения Вашего местоположения.</string>
-    <string name="storage">Память</string>
-    <string name="for_caching_map_tiles">Для кэширования данных</string>
+    <string name="location_perm_description">Для определения Вашего местоположения</string>
     <string-array name="unitList">
         <item>Метры</item>
         <item>Километры</item>
@@ -59,35 +54,28 @@
     <string name="information">Информация</string>
     <string name="please_wait">Пожалуйста подождите...</string>
     <string name="error_grant_su_permission">Ошибка получения прав суперпользователя.</string>
-    <string name="make_system_app">Сделать системным приложением</string>
-    <string name="make_non_system_app">Сделать пользовательским.</string>
     <string name="okay">OK</string>
-    <string name="experemental_feature">Эксперементальная функция!</string>
-    <string name="system_mover_description">Эта функция является экспериментальной и может привести к ошибке (Требуются права суперпользователя)</string>
     <string name="confirmation">Подтверждение</string>
     <string name="go_to_confirm_text">Вы действительно хотите начать подмену местоположения?</string>
     <string name="open_video">Посмотреть видео</string>
     <string name="open_settings">Открыть настройки</string>
     <string name="back">Назад</string>
     <string name="developer_options_disabled">Функции разработчика отключены!</string>
-    <string name="developer_options_instruction">1) Перейдите в настройки<![CDATA[<br>]]>2) Найдите пункт "О телефоне"<![CDATA[<br>]]>3) Найдите пунт "Номер сборки" и нажмите 7 раз<![CDATA[<br>]]>4) Вернитесь в основное окно настроек и найдите пункт "Для разработчиков"<![CDATA[<br>]]>5) Найдите пункт "Фиктивные местоположения" или "Симуляция местоположения"<![CDATA[<br>]]>6) Нажмите и выберите Listick Fake GPS.</string>
-    <string name="developer_options_instruction_miui">1) Перейдите в настройки<![CDATA[<br>]]>2) Найдите пункт "О телефоне"<![CDATA[<br>]]>3) Найдите пунт "Версия MIUI" и нажмите 5-7 раз<![CDATA[<br>]]>4) Вернитесь в основное окно настроек и найдите пункт "Для разработчиков"<![CDATA[<br>]]>5) Найдите пункт "Фиктивные местоположения"<![CDATA[<br>]]>6) Нажмите и выберите Listick Fake GPS.</string>
+    <string name="developer_options_instruction">1) Перейдите в настройки<![CDATA[<br>]]>2) Найдите пункт "О телефоне"<![CDATA[<br>]]>3) Найдите пункт "Номер сборки" и нажмите 7 раз<![CDATA[<br>]]>4) Вернитесь в основное окно настроек и найдите пункт "Для разработчиков"<![CDATA[<br>]]>5) Найдите пункт "Фиктивные местоположения" или "Симуляция местоположения"<![CDATA[<br>]]>6) Нажмите и выберите Listick Fake GPS.</string>
+    <string name="developer_options_instruction_miui">1) Перейдите в настройки<![CDATA[<br>]]>2) Найдите пункт "О телефоне"<![CDATA[<br>]]>3) Найдите пункт "Версия MIUI" и нажмите 5-7 раз<![CDATA[<br>]]>4) Вернитесь в основное окно настроек и найдите пункт "Для разработчиков"<![CDATA[<br>]]>5) Найдите пункт "Фиктивные местоположения"<![CDATA[<br>]]>6) Нажмите и выберите Listick Fake GPS.</string>
     <string name="miui_developer_instruction_link">https://www.youtube.com/watch?v=WjH6Y3oXrRY</string>
     <string name="aosp_developer_instruction_link">https://www.youtube.com/watch?v=XvIodXALSYg</string>
     <string name="oneui_developer_instruction_link">https://www.youtube.com/watch?v=cLGgmAVzu8I</string>
-    <string name="error_dest_loc">Ошибка получения адреса места назначения.</string>
-    <string name="switch_dark_theme">Включить темную тему</string>
-    <string name="switch_light_theme">Включить светлую тему</string>
+    <string name="error_dest_loc">Ошибка получения адреса места назначения</string>
     <string name="error">Предупреждение</string>
     <string name="you_dont_select_dest">Вы не указали пункт назначения!</string>
     <string name="please_select_dest">Пожалуйста укажите пункт назначения</string>
     <string name="stop">Остановить</string>
-    <string name="search_locked_description">У Вас уже построен или активирован статический режим, остановите текущие операции для перехода в поиск.</string>
+    <string name="search_locked_description">У Вас уже построен или активирован статический режим, остановите текущие операции для перехода в поиск</string>
     <string name="menu">Меню</string>
     <string name="keep_center_of_current_location">Центрировать карту на текущие координаты</string>
     <string name="origin_text">Откуда: </string>
     <string name="where_to_text">Куда: </string>
-    <string name="old_app_version">У вас установлена старая версия приложения. Получите новые функции и исправления, для этого просто перейдите в Google Play и обновите Listick Fake GPS.</string>
     <string name="updates">Обновления</string>
     <string name="push_notification_name">Новости приложения</string>
     <string name="mocking_notification_control">Управление статусом</string>
