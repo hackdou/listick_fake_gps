@@ -38,9 +38,6 @@
     <string name="speed">Speed</string>
     <string name="difference">Difference</string>
     <string name="version">Version</string>
-    <string name="last_update">Last Update</string>
-    <string name="last_update_date">10.2021</string>
-    <string name="listick_description">Listick Fake GPS is app for spoofing you current locations with routing feature.</string>
     <string name="no_internet">No internet connection</string>
     <string name="building_route">Please wait. Building Route...</string>
     <string name="failed_to_define_address">Failed to define address</string>
@@ -49,8 +46,6 @@
     <string name="meterabbr">m/s</string>
     <string name="location">Location</string>
     <string name="location_perm_description">For define you current location</string>
-    <string name="storage">Storage</string>
-    <string name="for_caching_map_tiles">For caching map tiles</string>
     <string-array name="unitList">
         <item>Meters</item>
         <item>Kilometers</item>
@@ -74,11 +69,7 @@
     <string name="information">Information</string>
     <string name="please_wait">Please wait...</string>
     <string name="error_grant_su_permission">Error superuser access.</string>
-    <string name="make_system_app">Make system app</string>
-    <string name="make_non_system_app">Make non-system app</string>
     <string name="okay">OK</string>
-    <string name="experemental_feature">Experemental Feature!</string>
-    <string name="system_mover_description">This feature is experemental and might error (Root needed)</string>
     <string name="confirmation">Confirmation</string>
     <string name="go_to_confirm_text">Do you really want to start location spoofing?</string>
     <string name="open_video">Watch the video</string>
@@ -91,8 +82,6 @@
     <string name="aosp_developer_instruction_link">https://www.youtube.com/watch?v=uMjyb3wf1Lw</string>
     <string name="oneui_developer_instruction_link">https://www.youtube.com/watch?v=gKLB_A8HBNI</string>
     <string name="error_dest_loc">Could not to fetch destination address</string>
-    <string name="switch_dark_theme">Switch on dark theme</string>
-    <string name="switch_light_theme">Switch on light theme</string>
     <string name="error">Error</string>
     <string name="stop">Stop</string>
     <string name="search_locked_description">You have one built route or activated static mode, you can stop and start spoofing again</string>
@@ -102,7 +91,6 @@
     <string name="keep_center_of_current_location">Center the map in the current coordinates</string>
     <string name="origin_text">Where from: </string>
     <string name="where_to_text">Where to: </string>
-    <string name="old_app_version">You have an old application version installed. Get the latest features and improvements, just updated Listick Fake GPS in Google Play.</string>
     <string name="updates">Updates</string>
     <string name="push_notification_name">App news</string>
     <string name="mocking_notification_control">Status control</string>
@@ -150,7 +138,6 @@
     <string name="static_spoof">Fixed</string>
     <string name="route_spoof">Route</string>
     <string name="bookmark_label">Label:</string>
-    <string name="before_run_spoofing">Firstly run spoofing</string>
     <string name="where_from_info">"Where from: "</string>
     <string name="start">Start</string>
     <string name="address">Address</string>
@@ -172,9 +159,6 @@
     <string name="joystick_altitude_warn">Altitude spoofing temporarily unavailable!</string>
     <string name="minutes">Minutes</string>
     <string name="seconds">Seconds</string>
-    <string name="enter_valid_time">Enter valid time!</string>
-    <string name="parking_time">Parking time at the starting point</string>
-    <string name="enter_parking_time">Enter parking time at the starting point!</string>
     <string name="parking_time_label">Delay at the starting point:</string>
     <string name="m_abbr">M</string>
     <string name="s_abbr">S</string>
