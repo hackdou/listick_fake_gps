@@ -57,10 +57,11 @@
     <color name="dialog_background">#151515</color>
 
     <color name="rounded_corner_button">@color/dark_primary</color>
-    <color name="pretty_toast">#E63A3A3A</color>
+    <color name="pretty_toast">#F23A3A3A</color>
     <color name="polyline_color">#B5B5B5</color>
     <color name="cardview_infobar">#272724</color>
     <color name="primaryColor">@color/cardview_infobar</color>
+    <color name="material_button_text_color">@color/white</color>
 
 
     <color name="white_accent">#1C1C1C</color>

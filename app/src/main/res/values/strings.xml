@@ -125,7 +125,7 @@
     <string name="stop_joystick">Close Joystick</string>
     <string name="select_start_point">Select start point!</string>
     <string name="firstly_close_joystick">Firstly please close active joystick!</string>
-    <string name="joystick_max_speed">Select joystick max speed:</string>
+    <string name="joystick_max_speed">Specify the speed of movement:</string>
     <string name="failed_get_currentloc">Failed to get you current location!</string>
     <string name="joystick_stop_mocking">To use the joystick, stop the location spoofing!</string>
     <string name="joystick_enabled_error">To start the spoofing, first stop the joystick mode!</string>
@@ -175,7 +175,7 @@
     <string name="enter_valid_time">Enter valid time!</string>
     <string name="parking_time">Parking time at the starting point</string>
     <string name="enter_parking_time">Enter parking time at the starting point!</string>
-    <string name="parking_time_label">Parking at the starting point:</string>
+    <string name="parking_time_label">Delay at the starting point:</string>
     <string name="m_abbr">M</string>
     <string name="s_abbr">S</string>
     <string name="auto">Auto</string>
@@ -199,5 +199,6 @@
     <string name="units_title">Units</string>
     <string name="map_tiles_title">Map tiles</string>
     <string name="traffic_side_title">Traffic side</string>
+    <string name="delay_at_the_last_point">Delay at the last point:</string>
 
 </resources>

@@ -1,10 +1,11 @@
 package project.listick.fakegps.UI;
 
+import static android.view.View.GONE;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.location.LocationManager;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -18,17 +19,13 @@ import org.osmdroid.views.MapView;
 import java.util.ArrayList;
 
 import project.listick.fakegps.BuildRoute;
-import project.listick.fakegps.Enumerations.EDirectionService;
 import project.listick.fakegps.Enumerations.ERouteTransport;
-import project.listick.fakegps.LocationMarker;
 import project.listick.fakegps.MapLoader;
 import project.listick.fakegps.MapUtil;
 import project.listick.fakegps.Model.BookmarksDBHelper;
 import project.listick.fakegps.OnSingleClickListener;
 import project.listick.fakegps.R;
 import project.listick.fakegps.RouteMarker;
-
-import static android.view.View.GONE;
 
 /*
  * Created by LittleAngry on 02.01.19 (macOS 10.12)
@@ -98,9 +95,9 @@ public class BookmarkDialog {
                 public void onRouteBuilt(ArrayList<GeoPoint> points, double sourceLat, double sourceLong, double destLat, double destLong, double distance, ERouteTransport transport) {
                     MapUtil.drawPath(mapView, points);
 
-                    RouteMarker sourceMarker = new RouteMarker(context, RouteMarker.Type.SOURCE);
+                    RouteMarker sourceMarker = new RouteMarker(RouteMarker.Type.SOURCE);
                     sourceMarker.setPosition(sourceLat, sourceLong);
-                    RouteMarker destMarker = new RouteMarker(context, RouteMarker.Type.DEST);
+                    RouteMarker destMarker = new RouteMarker(RouteMarker.Type.DEST);
                     destMarker.setPosition(destLat, destLong);
 
 
@@ -124,7 +121,7 @@ public class BookmarkDialog {
             //route = new BuildRoute(mOriginLat, mOriginLng, mDestLat, mDestLng, EDirectionService.OPEN_ROUTE_SERVICE, dialog.getContext(), dialog.getWindow().getDecorView(), ERouteTransport.ROUTE_CAR, routeListener);
             //route.execute();
         } else {
-            RouteMarker marker = new RouteMarker(activity, RouteMarker.Type.DEST);
+            RouteMarker marker = new RouteMarker(RouteMarker.Type.DEST);
             marker.setPosition(mLatitude, mLongitude);
 
             whereToField.setVisibility(GONE);

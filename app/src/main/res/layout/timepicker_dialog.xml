@@ -2,6 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/dialog_ui"
+    android:padding="4dp"
     android:orientation="vertical">
 
     <TextView
@@ -48,7 +49,7 @@
 
             <EditText
                 android:id="@+id/minutes"
-                style="@style/timepicker"
+                style="@style/uisearchview"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_below="@id/text_dialog"
@@ -79,7 +80,7 @@
 
             <EditText
                 android:id="@+id/seconds"
-                style="@style/timepicker"
+                style="@style/uisearchview"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_below="@id/text_dialog"
@@ -111,28 +112,29 @@
         android:layout_margin="5dp"
         android:orientation="horizontal">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/cancel"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_margin="3dp"
             android:layout_weight="1"
-            android:background="@drawable/outlined_button"
             android:text="@string/cancel"
             android:textAllCaps="false"
+            style="@style/Widget.Material3.Button.OutlinedButton"
             android:textColor="@color/uicolor_text_high"
             android:textSize="16sp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_action"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_margin="3dp"
             android:layout_weight="1"
-            android:background="@drawable/outlined_button"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:backgroundTint="@color/primaryColor"
             android:text="@string/continue_text"
             android:textAllCaps="false"
-            android:textColor="@color/uicolor_text_high"
+            android:textColor="@color/material_button_text_color"
             android:textSize="16sp" />
 
     </LinearLayout>

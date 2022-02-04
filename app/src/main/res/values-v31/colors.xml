@@ -8,6 +8,10 @@
 
 
     <color name="primaryColor">@android:color/system_accent1_500</color>
+    <color name="material_button_text_color">@color/background</color>
     <color name="secondaryColor">@android:color/system_accent1_300</color>
+
+    <color name="pretty_toast">@android:color/system_neutral1_100</color>
+
 
 </resources>

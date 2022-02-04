@@ -2,9 +2,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
-def appVersion = '2.7.3'
+def appVersion = '2.7.4'
 def mapsVersion = '6.1.11'
-def appVersionCode = 29
+def appVersionCode = 30
 
 android {
     compileSdkVersion 31
@@ -14,7 +14,7 @@ android {
         targetSdkVersion 31
         versionCode appVersionCode
         versionName appVersion
-        multiDexEnabled false
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.debug
     }

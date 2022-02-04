@@ -2,8 +2,8 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape>
-            <solid android:color="@color/dialog_background" />
-            <corners android:radius="12dp" />
+            <solid android:color="@color/background" />
+            <corners android:radius="24dp" />
 
             <stroke
                 android:color="@color/divider"

@@ -156,9 +156,8 @@ public class SearchActivity extends Activity implements SearchImpl.UI {
             @Override
             public void onTransitionStart(Transition transition) {
                 RelativeLayout sharedElement = (RelativeLayout) findViewById(R.id.home);
-                sharedElement.setBackground(getDrawable(R.drawable.rounded_corner_square));
                 sharedElement.removeAllViews();
-                sharedElement.setAlpha(0.5f);
+                sharedElement.setAlpha(0.9f);
             }
 
             @Override

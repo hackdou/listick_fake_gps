@@ -7,7 +7,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -81,7 +80,7 @@ public class TimePickerDialog {
                 }
 
                 if (seconds > 60 || minutes > 60) {
-                    PrettyToast.error(mContext, R.string.enter_valid_time, Toast.LENGTH_LONG);
+                    PrettyToast.error(mContext, R.string.enter_valid_time);
                     return;
                 }
 

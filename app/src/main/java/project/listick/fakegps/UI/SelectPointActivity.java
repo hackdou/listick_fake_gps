@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.core.view.ViewCompat;
 
@@ -87,7 +86,7 @@ public class SelectPointActivity extends Edge2EdgeActivity {
         boolean joystickSelectDest = intent.getBooleanExtra(JoystickActivity.JOYSTICK_SELECT_DEST, false);
 
         if (!joystickSelectDest) {
-            RouteMarker routeMarker = new RouteMarker(this, RouteMarker.Type.SOURCE);
+            RouteMarker routeMarker = new RouteMarker(RouteMarker.Type.SOURCE);
             routeMarker.setPosition(sourceLat, sourceLong);
             mapView.getOverlayManager().add(routeMarker);
         }
@@ -119,13 +118,12 @@ public class SelectPointActivity extends Edge2EdgeActivity {
 
                 @Override
                 public void onError() {
-                    Toast.makeText(SelectPointActivity.this, getString(R.string.failed_to_define_address), Toast.LENGTH_LONG).show();
+                    PrettyToast.show(SelectPointActivity.this, getString(R.string.failed_to_define_address), R.drawable.ic_search);
                 }
             });
 
             mKeyboard.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
         });
-        //new OldVersionControl(this);
 
         continueBtn.setOnClickListener(new OnSingleClickListener() {
             @Override

@@ -1,6 +1,5 @@
 package project.listick.fakegps;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
@@ -28,7 +27,7 @@ public class RouteMarker extends Overlay {
     private Point point;
     private Type type;
 
-    public RouteMarker(Context context, RouteMarker.Type type){
+    public RouteMarker(RouteMarker.Type type){
         this.point = new Point();
         this.type = type;
     }

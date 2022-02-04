@@ -3,7 +3,7 @@
     <solid android:color="@color/app_system_bars"/>
 
     <corners
-        android:bottomLeftRadius="8dp" android:bottomRightRadius="8dp" />
+        android:bottomLeftRadius="16dp" android:bottomRightRadius="16dp" />
     <stroke
         android:color="@color/divider"
         android:width="1dp"

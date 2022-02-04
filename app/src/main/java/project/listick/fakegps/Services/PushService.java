@@ -3,7 +3,9 @@ package project.listick.fakegps.Services;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
@@ -21,6 +23,12 @@ public class PushService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         if (notification != null) {
+
+            if (notification.getClickAction().contains("tg_subscribe")) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://t.me/project_listick"));
+                startActivity(browserIntent);
+            }
+
             sendNotification(notification.getTitle(), notification.getBody());
         }
     }

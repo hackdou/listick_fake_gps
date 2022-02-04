@@ -50,11 +50,6 @@
 
     </style>
 
-    <style name="timepicker" parent="uisearchview">
-        <item name="android:background">@drawable/timepicker_layout</item>
-    </style>
-
-
     <style name="bottomSheetStyleWrapper" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
     </style>

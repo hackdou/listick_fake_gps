@@ -134,10 +134,10 @@ public class MultipleRoutesInfo implements Parcelable {
     }
 
     public OriginAndDestMarker getRouteMarker(Context context) {
-        RouteMarker origin = new RouteMarker(context, RouteMarker.Type.SOURCE);
+        RouteMarker origin = new RouteMarker(RouteMarker.Type.SOURCE);
         origin.setPosition(mRoute.get(0).getLatitude(), mRoute.get(0).getLongitude());
 
-        RouteMarker dest = new RouteMarker(context, RouteMarker.Type.DEST);
+        RouteMarker dest = new RouteMarker(RouteMarker.Type.DEST);
         dest.setPosition(mRoute.get(mRoute.size() - 1).getLatitude(), mRoute.get(mRoute.size() - 1).getLongitude());
 
         originAndDestMarkers.origin = origin;

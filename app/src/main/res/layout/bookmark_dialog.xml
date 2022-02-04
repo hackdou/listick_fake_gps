@@ -121,27 +121,25 @@
         android:layout_below="@id/remove"
         android:orientation="horizontal">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/cancel_action"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/text_dialog"
             android:layout_margin="3dp"
             android:layout_weight="1"
-            android:background="@drawable/outlined_button"
             android:text="@string/cancel"
             android:textAllCaps="false"
             android:textColor="@color/uicolor_text_high"
             android:textSize="16sp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_action"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/text_dialog"
             android:layout_margin="3dp"
             android:layout_weight="1"
-            android:background="@drawable/outlined_button"
             android:text="@string/start"
             android:textAllCaps="false"
             android:textColor="@color/uicolor_text_high"

@@ -98,6 +98,7 @@
             android:drawableStart="@drawable/speedometer"
             android:hint="@string/speed"
             android:inputType="number"
+            android:drawablePadding="10dp"
             android:maxLength="3" />
 
         <TextView
@@ -116,36 +117,24 @@
         android:id="@+id/altitude_msg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/istyle_button_above_text"
         android:layout_above="@id/btn_continue"
-        android:textColor="@color/error"
-        android:textStyle="bold"
         android:layout_centerHorizontal="true"
-        android:text="@string/joystick_altitude_warn" />
+        android:layout_marginBottom="@dimen/istyle_button_above_text"
+        android:text="@string/joystick_altitude_warn"
+        android:textColor="@color/error"
+        android:textStyle="bold" />
 
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_continue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/ignore"
+        android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/istyle_button_above_text"
         android:backgroundTint="@color/primaryColor"
         android:stateListAnimator="@null"
         android:text="@string/start_joystick"
         android:textAllCaps="false"
         android:textColor="@color/blue_ui_text" />
-
-    <TextView
-        android:id="@+id/ignore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/back"
-        android:textColor="@color/blue_ui_color"
-        android:textStyle="bold"
-        android:visibility="invisible" />
-
 
 </RelativeLayout>

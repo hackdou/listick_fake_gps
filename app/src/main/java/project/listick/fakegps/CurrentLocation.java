@@ -32,7 +32,7 @@ public class CurrentLocation implements LocationListener, GoogleApiClient.OnConn
     private final LocationManager lm;
     private final Context context;
     private final MapView mapView;
-    private MyLocationPoint mMyLocationPoint;
+    private final MyLocationPoint mMyLocationPoint;
 
     private Location location;
 

@@ -73,7 +73,7 @@ public class PrettyToast {
         toast.startAnimation(toastIn);
     }
 
-    public static void error(Context context, @StringRes int resId, int duration) {
+    public static void error(Context context, @StringRes int resId) {
         Toast toast = Toast.makeText(context, resId, Toast.LENGTH_LONG);
         View view = toast.getView();
         TextView view1 = view.findViewById(android.R.id.message);
@@ -82,13 +82,6 @@ public class PrettyToast {
         toast.show();
     }
 
-    public static void error(Context context, String text, int duration) {
-        Toast toast = Toast.makeText(context, text, Toast.LENGTH_LONG);
-        View view = toast.getView();
-        TextView view1 = view.findViewById(android.R.id.message);
-        view1.setTextColor(context.getColor(R.color.uicolor_text_high));
-        view.setBackgroundResource(R.drawable.toast_error);
-        toast.show();
-    }
+
 
 }
