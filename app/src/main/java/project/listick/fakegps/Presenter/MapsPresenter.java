@@ -652,7 +652,7 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
     private void addInBookmarks() {
         if (!MainServiceControl.isRouteSpoofingServiceRunning(mContext)
                 && !MainServiceControl.isFixedSpoofingServiceRunning(mContext)) {
-            Toast.makeText(mContext, R.string.before_run_spoofing, Toast.LENGTH_LONG).show();
+            //Toast.makeText(mContext, R.string.before_run_spoofing, Toast.LENGTH_LONG).show();
             return;
         }
 

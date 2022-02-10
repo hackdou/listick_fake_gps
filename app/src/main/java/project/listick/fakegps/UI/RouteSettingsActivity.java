@@ -149,7 +149,7 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
                 mPauseAtStartingTimer.setText(format);
 
             });
-            tm.show(getString(R.string.parking_time), getString(R.string.enter_parking_time));
+            tm.show();
 
         });
 

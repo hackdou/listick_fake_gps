@@ -48,8 +48,8 @@ public class TimePickerDialog {
         Button okButton = mDialog.findViewById(R.id.btn_action);
         Button cancelAction = mDialog.findViewById(R.id.cancel);
 
-        title.setText(dialogTitle);
-        description.setText(dialogDescription);
+        title.setText(dialogTitle != null ? dialogTitle : "");
+        description.setText(dialogDescription != null ? dialogDescription : "");
 
 
         et_minutes.setOnFocusChangeListener((v, hasFocus) -> {
@@ -80,7 +80,7 @@ public class TimePickerDialog {
                 }
 
                 if (seconds > 60 || minutes > 60) {
-                    PrettyToast.error(mContext, R.string.enter_valid_time);
+                    //PrettyToast.error(mContext, R.string.enter_valid_time);
                     return;
                 }
 
@@ -109,6 +109,9 @@ public class TimePickerDialog {
         });
 
         mDialog.show();
+    }
+    public void show() {
+        show(null, null);
     }
 
     private void hideKeyboard() {
