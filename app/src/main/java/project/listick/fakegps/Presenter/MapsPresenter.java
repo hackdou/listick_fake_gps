@@ -481,7 +481,7 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
         if (AppPreferences.getMapTileProvider(mContext) == MapLoader.GOOGLE_MAPS_TILES && maps_api != null)
             service = EDirectionService.MAPS_API_V2;
 
-        BuildRoute buildRoute = new BuildRoute(sourceLat, sourceLong, destLat, destLong, service, mContext, null, transport, routeListener);
+        BuildRoute buildRoute = new BuildRoute(sourceLat, sourceLong, destLat, destLong, service, mContext, transport, routeListener);
         buildRoute.execute();
 
         mMap.invalidate();

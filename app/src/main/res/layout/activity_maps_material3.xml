@@ -56,8 +56,12 @@
 
     </RelativeLayout>
 
-    <include layout="@layout/route_building_fullscreen_dialog" />
-
+    <LinearLayout
+        android:id="@+id/route_building_status_container"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:visibility="gone"/>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator"
@@ -89,6 +93,5 @@
         app:itemIconTint="#8b8b8b"
         app:itemTextColor="#666666"
         app:menu="@menu/drawermenu" />
-
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import org.osmdroid.util.GeoPoint;
 
@@ -30,7 +32,6 @@ public class BuildRoute extends AsyncTask<Void, Void, Void> {
     private final ERouteTransport transport;
     private final WeakReference<Context> mContext;
     private WeakReference<View> mProgressDialog;
-    private final WeakReference<View> mView;
     private final BuildRouteListener mListener;
 
     public interface BuildRouteListener {
@@ -39,27 +40,41 @@ public class BuildRoute extends AsyncTask<Void, Void, Void> {
         void onCancel();
     }
 
+    private void inflateProgressLayout() {
+        Activity activity = (Activity) mContext.get();
+
+        LinearLayout progressLayoutContainer = activity.findViewById(R.id.route_building_status_container);
+        progressLayoutContainer.setVisibility(View.VISIBLE);
+        mProgressDialog = new WeakReference<>(activity.getLayoutInflater().inflate(R.layout.route_building_fullscreen_dialog, null));
+        mProgressDialog.get().setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        progressLayoutContainer.addView(mProgressDialog.get());
+
+        mProgressDialog.get().findViewById(R.id.loading).setOnClickListener(v -> { });
+    }
+
+    private void removeProgressLayout() {
+        Activity activity = (Activity) mContext.get();
+        LinearLayout progressLayoutContainer = activity.findViewById(R.id.route_building_status_container);
+        progressLayoutContainer.removeView(mProgressDialog.get());
+        progressLayoutContainer.setVisibility(View.GONE);
+    }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        if (mView != null) {
-            mProgressDialog = new WeakReference<>(mView.get().findViewById(R.id.loading));
-        } else {
-            Activity activity = (Activity) mContext.get();
-            mProgressDialog = new WeakReference<>(activity.findViewById(R.id.loading));
-        }
+
+        inflateProgressLayout();
 
         View cancel = mProgressDialog.get().findViewById(R.id.cancel);
+
         cancel.setOnClickListener(v -> {
             mListener.onCancel();
-            mProgressDialog.get().setVisibility(View.GONE);
+            removeProgressLayout();
             BuildRoute.this.cancel(false);
         } );
-
-        mProgressDialog.get().setVisibility(View.VISIBLE);
     }
 
-    public BuildRoute(double sourceLat, double sourceLong, double destLat, double destLong, EDirectionService directionService, Context context, View view, ERouteTransport transport, BuildRouteListener listener) {
+    public BuildRoute(double sourceLat, double sourceLong, double destLat, double destLong, EDirectionService directionService, Context context, ERouteTransport transport, BuildRouteListener listener) {
         this.sourceLat = sourceLat;
         this.sourceLong = sourceLong;
         this.destLat = destLat;
@@ -68,14 +83,13 @@ public class BuildRoute extends AsyncTask<Void, Void, Void> {
         this.mContext = new WeakReference<>(context);
         this.transport = transport;
         this.mListener = listener;
-        this.mView = view == null ? null : new WeakReference<>(view);
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
-        mProgressDialog.get().setVisibility(View.GONE);
+        removeProgressLayout();
 
         if (geoPoints == null || geoPoints.isEmpty()) {
             geoPoints = new ArrayList<>();

@@ -101,7 +101,6 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
         mPresenter = new MapsPresenter(mMap, this);
 
         MaterialButton getLocation = findViewById(R.id.getlocation_container);
-        RelativeLayout loading = findViewById(R.id.loading);
 
         mStopContainer = findViewById(R.id.stop_button);
         mPauseContainer = findViewById(R.id.pause_button);
@@ -200,7 +199,6 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
         mRestoreLocation.setOnClickListener(v -> mPresenter.handleClear());
 
         getLocation.setOnClickListener(v -> mPresenter.onCurrentLocationClick());
-        loading.setOnClickListener(v -> { });
 
         lockSearchBar(false);
 
