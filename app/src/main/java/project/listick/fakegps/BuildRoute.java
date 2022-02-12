@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import org.osmdroid.util.GeoPoint;
 
@@ -13,7 +12,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import project.listick.fakegps.API.LFGSimpleApi;
-import project.listick.fakegps.Enumerations.EDirectionService;
 import project.listick.fakegps.Enumerations.ERouteTransport;
 
 /*
@@ -28,7 +26,6 @@ public class BuildRoute extends AsyncTask<Void, Void, Void> {
     public double distance;
 
     private ArrayList<GeoPoint> geoPoints;
-    private final EDirectionService directionService;
     private final ERouteTransport transport;
     private final WeakReference<Context> mContext;
     private WeakReference<View> mProgressDialog;
@@ -74,12 +71,11 @@ public class BuildRoute extends AsyncTask<Void, Void, Void> {
         } );
     }
 
-    public BuildRoute(double sourceLat, double sourceLong, double destLat, double destLong, EDirectionService directionService, Context context, ERouteTransport transport, BuildRouteListener listener) {
+    public BuildRoute(double sourceLat, double sourceLong, double destLat, double destLong, Context context, ERouteTransport transport, BuildRouteListener listener) {
         this.sourceLat = sourceLat;
         this.sourceLong = sourceLong;
         this.destLat = destLat;
         this.destLong = destLong;
-        this.directionService = directionService;
         this.mContext = new WeakReference<>(context);
         this.transport = transport;
         this.mListener = listener;
@@ -108,18 +104,14 @@ public class BuildRoute extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
         if (NetworkUtils.isNetworkAvailable())
-            buildRoute(directionService);
+            buildRoute();
         return null;
     }
 
-    private void buildRoute(EDirectionService directionService){
-        String content;
-
-        if (directionService == EDirectionService.OPEN_ROUTE_SERVICE){
-            LFGSimpleApi.Directions openRoute = new LFGSimpleApi.Directions(sourceLat, sourceLong, destLat, destLong, transport);
-            content = openRoute.getContent();
-            geoPoints = openRoute.downloadRoute(content, true);
-        }
+    private void buildRoute(){
+        LFGSimpleApi.Directions openRoute = new LFGSimpleApi.Directions(sourceLat, sourceLong, destLat, destLong, transport);
+        String content = openRoute.getContent();
+        geoPoints = openRoute.downloadRoute(content, true);
     }
 
 }

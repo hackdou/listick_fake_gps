@@ -22,7 +22,6 @@ public class MapLoader {
     public static final String DEFAULT_TILE_PROVIDER = "default_tile_provider";
     public static final int DEFAULT_TILES = 0;
     public static final int WIKIMEDIA_TILES = 1;
-    public static final int GOOGLE_MAPS_TILES = 2;
     public static final long ZOOM_ANIMATION_SPEED = 1000L;
     public static final double OPTIMIZED_ZOOM_LVL = 17d;
     public static final double MIN_ZOOM_LVL = 15d;

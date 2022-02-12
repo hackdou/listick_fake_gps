@@ -48,10 +48,6 @@ public class AppPreferences {
         return (int) Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(context).getString(ListickApp.ACCURACY_SETTINGS, "10"));
     }
 
-    public static String getMapsApiKey(Context context){
-        return PreferenceManager.getDefaultSharedPreferences(context).getString("maps_v2_apikey", null);
-    }
-
     public static String getUnitName(@NonNull Context context, int unit){
         Resources res = context.getResources();
 

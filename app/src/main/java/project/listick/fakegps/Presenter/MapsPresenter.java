@@ -39,13 +39,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import project.listick.fakegps.AppPreferences;
 import project.listick.fakegps.AsyncGeocoder;
 import project.listick.fakegps.AsyncWebClient;
 import project.listick.fakegps.BuildRoute;
 import project.listick.fakegps.Contract.MapsImpl;
 import project.listick.fakegps.CurrentLocation;
-import project.listick.fakegps.Enumerations.EDirectionService;
 import project.listick.fakegps.Enumerations.ERouteTransport;
 import project.listick.fakegps.FakeGPSApplication;
 import project.listick.fakegps.JoystickOverlay;
@@ -475,13 +473,7 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
             }
         };
 
-        String maps_api = AppPreferences.getMapsApiKey(mContext);
-        EDirectionService service = EDirectionService.OPEN_ROUTE_SERVICE;
-
-        if (AppPreferences.getMapTileProvider(mContext) == MapLoader.GOOGLE_MAPS_TILES && maps_api != null)
-            service = EDirectionService.MAPS_API_V2;
-
-        BuildRoute buildRoute = new BuildRoute(sourceLat, sourceLong, destLat, destLong, service, mContext, transport, routeListener);
+        BuildRoute buildRoute = new BuildRoute(sourceLat, sourceLong, destLat, destLong, mContext, transport, routeListener);
         buildRoute.execute();
 
         mMap.invalidate();
