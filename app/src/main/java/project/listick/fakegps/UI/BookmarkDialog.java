@@ -11,17 +11,14 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
 import java.util.ArrayList;
 
-import project.listick.fakegps.BuildRoute;
 import project.listick.fakegps.Enumerations.ERouteTransport;
 import project.listick.fakegps.MapLoader;
-import project.listick.fakegps.MapUtil;
 import project.listick.fakegps.Model.BookmarksDBHelper;
 import project.listick.fakegps.OnSingleClickListener;
 import project.listick.fakegps.R;
@@ -88,34 +85,33 @@ public class BookmarkDialog {
             whereToField.append(" " + mDestAddress);
             GeoPoint origin = mOriginList.get(0);
             mapView.getController().animateTo(new GeoPoint(origin.getLatitude(), origin.getLongitude()), 15d, 500L);
-            BuildRoute route;
 
-            BuildRoute.BuildRouteListener routeListener = new BuildRoute.BuildRouteListener() {
-                @Override
-                public void onRouteBuilt(ArrayList<GeoPoint> points, double sourceLat, double sourceLong, double destLat, double destLong, double distance, ERouteTransport transport) {
-                    MapUtil.drawPath(mapView, points);
-
-                    RouteMarker sourceMarker = new RouteMarker(RouteMarker.Type.SOURCE);
-                    sourceMarker.setPosition(sourceLat, sourceLong);
-                    RouteMarker destMarker = new RouteMarker(RouteMarker.Type.DEST);
-                    destMarker.setPosition(destLat, destLong);
-
-
-                    mapView.getOverlays().add(sourceMarker);
-                    mapView.getOverlays().add(destMarker);
-                }
-
-                @Override
-                public void onRouteError(ArrayList<GeoPoint> points, double sourceLat, double sourceLong, double destLat, double destLong, double distance, ERouteTransport transport) {
-                    Toast.makeText(context, R.string.failed_to_build_route, Toast.LENGTH_LONG).show();
-                    onRouteBuilt(points, sourceLat, sourceLong, destLat, destLong, distance, transport);
-                }
-
-                @Override
-                public void onCancel() {
-
-                }
-            };
+//            BuildRoute.BuildRouteListener routeListener = new BuildRoute.BuildRouteListener() {
+//                @Override
+//                public void onRouteBuilt(ArrayList<GeoPoint> points, double sourceLat, double sourceLong, double destLat, double destLong, double distance, ERouteTransport transport) {
+//                    MapUtil.drawPath(mapView, points);
+//
+//                    RouteMarker sourceMarker = new RouteMarker(RouteMarker.Type.SOURCE);
+//                    sourceMarker.setPosition(sourceLat, sourceLong);
+//                    RouteMarker destMarker = new RouteMarker(RouteMarker.Type.DEST);
+//                    destMarker.setPosition(destLat, destLong);
+//
+//
+//                    mapView.getOverlays().add(sourceMarker);
+//                    mapView.getOverlays().add(destMarker);
+//                }
+//
+//                @Override
+//                public void onRouteError(ArrayList<GeoPoint> points, double sourceLat, double sourceLong, double destLat, double destLong, double distance, ERouteTransport transport) {
+//                    Toast.makeText(context, R.string.failed_to_build_route, Toast.LENGTH_LONG).show();
+//                    onRouteBuilt(points, sourceLat, sourceLong, destLat, destLong, distance, transport);
+//                }
+//
+//                @Override
+//                public void onCancel() {
+//
+//                }
+//            };
 
 
             //route = new BuildRoute(mOriginLat, mOriginLng, mDestLat, mDestLng, EDirectionService.OPEN_ROUTE_SERVICE, dialog.getContext(), dialog.getWindow().getDecorView(), ERouteTransport.ROUTE_CAR, routeListener);

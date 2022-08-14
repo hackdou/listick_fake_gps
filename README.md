@@ -10,7 +10,6 @@ Application for the spoofing your coordinates by satellite and cellular networks
 - Play location-based games with Joystick mode
 - Location deviation feature
 - Automatic elevation determination (Altitude)
-- Save you places for spoofig in bookmarks.
 
 ## Download
 <a href='https://play.google.com/store/apps/details?id=project.listick.fakegps'><img alt='Get it on Google Play' src='https://play.google.com/intl/ja/badges/static/images/badges/en_badge_web_generic.png' width='200'/></a>

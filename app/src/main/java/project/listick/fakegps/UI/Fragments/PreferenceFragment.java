@@ -10,13 +10,13 @@ import android.text.method.DigitsKeyListener;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.preference.DropDownPreference;
 import androidx.preference.EditTextPreference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import project.listick.fakegps.AppPreferences;
 import project.listick.fakegps.R;
+import rikka.preference.SimpleMenuPreference;
 
 public class PreferenceFragment extends PreferenceFragmentCompat {
     @Override
@@ -71,7 +71,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             });
         }
 
-        DropDownPreference standartUnit = findPreference("standart_unit");
+        SimpleMenuPreference standartUnit = findPreference("standart_unit");
         if (standartUnit != null) {
             int stdUnit = AppPreferences.getStandartUnit(requireContext());
 
@@ -86,7 +86,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             });
         }
 
-        DropDownPreference tileProvider = findPreference("default_tile_provider");
+        SimpleMenuPreference tileProvider = findPreference("default_tile_provider");
         if (tileProvider != null) {
             int defTileProvider = AppPreferences.getMapTileProvider(requireContext());
 
@@ -101,7 +101,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             });
         }
 
-        DropDownPreference trafficSide = findPreference("traffic_side");
+        SimpleMenuPreference trafficSide = findPreference("traffic_side");
         if (trafficSide != null) {
             int defSide = AppPreferences.getTrafficSide(requireContext());
 

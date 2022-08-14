@@ -12,6 +12,14 @@
         <item name="backgroundColor">@color/black</item>
     </style>
 
+    <style name="ChallengeActivityTheme" parent="AppTheme">
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:statusBarColor">#292929</item>
+        <item name="android:navigationBarColor">@color/black</item>
+        <item name="backgroundColor">@color/black</item>
+    </style>
+
+
     <style name="E2ETheme" parent="AppTheme">
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:statusBarColor">@color/app_system_bars</item>

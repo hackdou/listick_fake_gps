@@ -25,7 +25,6 @@ public class PermissionsActivity extends Activity implements PermissionsImpl.UI 
     private static final int TIME_INTERVAL = 2000; // # milliseconds, desired time passed between two back presses.
     private long mBackPressed;
 
-
     private PermissionsPresenter presenter;
     private MaterialButton mRequestPermissions;
 

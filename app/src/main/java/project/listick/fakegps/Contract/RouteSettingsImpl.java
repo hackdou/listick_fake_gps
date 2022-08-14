@@ -5,7 +5,9 @@ package project.listick.fakegps.Contract;
  * */
 public interface RouteSettingsImpl {
     interface Presenter {
+        void setElevation();
         void onActivityLoad();
+        void onChallengePassed(String challengeResult);
         void onCancelClick();
         void onContinueClick(int speed, int difference, float elevation, float elevationDiff, boolean isClosedRoute);
     }

@@ -168,5 +168,9 @@
     <string name="units_title">Единицы измерения</string>
     <string name="map_tiles_title">Карты</string>
     <string name="traffic_side_title">Сторона движения</string>
+    <string name="date_is_inaccurate">Неправильная дата</string>
+    <string name="date_is_inaccurate_summary">Не удалось установить безопасное соединение с сервером.\nНа вашем устройстве установлена неправильная дата.\nИсправьте и повторите попытку!</string>
+    <string name="adjust_clock">Настроить время</string>
+    <string name="our_telegram">Наш Telegram</string>
 
 </resources>

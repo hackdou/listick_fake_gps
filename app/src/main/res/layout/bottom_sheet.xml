@@ -212,6 +212,7 @@
         android:textColor="@color/uicolor_text_high"
         android:lines="1"
         app:iconTint="@color/uicolor_text_high"/>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/active_route_info"
         android:layout_width="match_parent"
@@ -219,7 +220,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
-        app:cardElevation="4dp"
+        app:cardElevation="0dp"
         app:cardBackgroundColor="@color/cardview_infobar"
         app:cardCornerRadius="16dp">
         <RelativeLayout

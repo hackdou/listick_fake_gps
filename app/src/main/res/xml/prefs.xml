@@ -2,17 +2,17 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/spoofing_preferences_title">
 
-        <SwitchPreference
+        <rikka.material.preference.MaterialSwitchPreference
             android:defaultValue="true"
             android:key="brake_at_turning"
             android:summary="@string/brake_at_turning_summary"
             android:title="@string/brake_at_turning" />
-        <SwitchPreference
+        <rikka.material.preference.MaterialSwitchPreference
             android:defaultValue="true"
             android:key="location_deviation"
             android:summary="@string/location_deviation_summary"
             android:title="@string/location_deviation" />
-        <SwitchPreference
+        <rikka.material.preference.MaterialSwitchPreference
             android:defaultValue="true"
             android:icon="@drawable/ic_terrain"
             android:key="auto_altitude"
@@ -21,21 +21,21 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/measurement_title">
 
-        <DropDownPreference
+        <rikka.preference.SimpleMenuPreference
             android:icon="@drawable/ic_ruler"
             android:key="standart_unit"
             android:summary="Kilometers"
             android:title="@string/units_title"
             android:entries="@array/unitList"
             android:entryValues="@array/unit_values"/>
-        <DropDownPreference
+        <rikka.preference.SimpleMenuPreference
             android:key="default_tile_provider"
             android:icon="@drawable/ic_map_black_24dp"
             android:summary="Default (OSM)"
             android:title="@string/map_tiles_title"
             android:entries="@array/map_tiles"
             android:entryValues="@array/map_tiles_value"/>
-        <DropDownPreference
+        <rikka.preference.SimpleMenuPreference
             android:icon="@drawable/ic_baseline_road"
             android:key="traffic_side"
             android:summary="Right-hand traffic"

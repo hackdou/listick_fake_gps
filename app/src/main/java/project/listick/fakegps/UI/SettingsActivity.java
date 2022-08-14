@@ -18,6 +18,7 @@ public class SettingsActivity extends Edge2EdgeActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getTheme().applyStyle(rikka.material.preference.R.style.ThemeOverlay_Rikka_Material3_Preference, true);
         setContentView(R.layout.activity_preferences);
 
         MaterialToolbar toolbar = findViewById(R.id.toolbar);

@@ -74,6 +74,7 @@
     <color name="primaryColor">@color/uicolor_text_high</color>
     <color name="material_button_text_color">@color/white</color>
     <color name="secondaryColor">@color/uicolor_text_medium</color>
+    <color name="buttonUnavailable">#444444</color>
 
 
 </resources>

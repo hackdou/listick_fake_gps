@@ -71,4 +71,12 @@ public class PermissionManager {
         }
     }
 
+    public static boolean isPackageInstalled(String packageName) {
+        try {
+            FakeGPSApplication.getAppContext().getPackageManager().getPackageInfo(packageName, 0);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
 }

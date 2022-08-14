@@ -4,6 +4,11 @@ package project.listick.fakegps;
  * Created by LittleAngry on 31.12.18 (macOS 10.12)
  * */
 public class ListickApp {
+
+    public static final String PLAY_PACKAGE_NAME = "com.android.vending";
+    public static final String TELEGRAM_PACKAGE_NAME = "org.telegram.messenger";
+    public static final String TELEGRAM_WEB_PACKAGE_NAME = "org.telegram.messenger.web";
+
     public static final String ACCURACY_SETTINGS = "accuracy_settings";
     public static final String GPS_UPDATES_DELAY = "gps_updates_delay";
     public static final String BRAKE_AT_TURNING = "brake_at_turning";

@@ -2,9 +2,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
-def appVersion = '2.7.4'
-def mapsVersion = '6.1.11'
-def appVersionCode = 30
+def appVersion = '2.7.6'
+def mapsVersion = '6.1.13'
+def appVersionCode = 32
 
 android {
     compileSdkVersion 32
@@ -59,20 +59,27 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation 'com.google.android.material:material:1.6.0-alpha02'
-    implementation 'com.google.firebase:firebase-core:20.0.2'
-    implementation 'com.google.firebase:firebase-messaging:23.0.0'
-    implementation 'com.google.firebase:firebase-crashlytics:18.2.7'
+    implementation 'com.google.android.material:material:1.7.0-beta01'
+    implementation 'com.google.firebase:firebase-core:21.1.0'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.12'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
     implementation "org.osmdroid:osmdroid-android:${mapsVersion}"
-    implementation 'com.google.android.gms:play-services-location:19.0.1'
+    implementation 'com.google.android.gms:play-services-location:20.0.0'
 
-    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
     implementation 'com.github.tiann:FreeReflection:3.1.0'
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.2.0"
 
     implementation files("${rootDir}/syslibs/manager.jar")
-    implementation 'androidx.fragment:fragment:1.4.1'
-    implementation 'androidx.preference:preference:1.2.0'
+    implementation 'androidx.fragment:fragment:1.5.2'
+    implementation ("androidx.preference:preference:1.2.0") {
+        exclude group: "androidx.lifecycle", module: "lifecycle-viewmodel-ktx"
+    }
+    implementation ("dev.rikka.rikkax.material:material-preference:2.0.0") {
+        exclude group: "dev.rikka.rikkax.appcompat", module: "appcompat"
+        exclude group: "androidx.lifecycle", module: "lifecycle-viewmodel-ktx"
+    }
+    implementation 'com.google.android.gms:play-services-safetynet:18.0.1'
+
 }

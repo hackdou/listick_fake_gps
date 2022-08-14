@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -50,6 +51,8 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
     private int mDestTimerMinutes;
     private int mDestTimerSeconds;
 
+    private RouteSettingsPresenter mPresenter;
+
     public static void startActivity(Activity activity, double latitude, double longitude, double distance, boolean isRoute, boolean addMoreRoute, int requestCode) {
         activity.startActivityForResult(new Intent(activity, RouteSettingsActivity.class)
                 .putExtra(ListickApp.LATITUDE, latitude)
@@ -57,6 +60,23 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
                 .putExtra(ListickApp.DISTANCE, distance)
                 .putExtra(RouteSettingsPresenter.ADD_MORE_ROUTE, addMoreRoute)
                 .putExtra(RouteSettingsPresenter.IS_ROUTE, isRoute), requestCode);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CaptchaActivity.ACTIVITY_REQUEST_CODE) {
+            if (mPresenter != null && resultCode == RESULT_OK) {
+                String challengeResult = data.getStringExtra(CaptchaActivity.KEY_CAPTCHA_RESULT);
+                mPresenter.onChallengePassed(challengeResult);
+            } else if (mPresenter != null) {
+                stopAltitudeDetection();
+                mPresenter.setElevation();
+                onAltitudeDetermined(false, false);
+            }
+        }
+
     }
 
     @Override
@@ -80,7 +100,6 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
         mPauseAtStartingContainer = findViewById(R.id.pause_at_starting);
         mPauseAtStartingTimer = findViewById(R.id.parking_time);
 
-
         mDetectingAltitude.hideShimmer();
 
         TextView speedUnit = findViewById(R.id.speed_unit);
@@ -90,7 +109,7 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
         speedUnit.setText(unitName);
         speedDiffUnit.setText(unitName);
 
-        final RouteSettingsPresenter presenter = new RouteSettingsPresenter(this);
+        mPresenter = new RouteSettingsPresenter(this);
 
         mContinue.setOnClickListener(new OnSingleClickListener() {
             @Override
@@ -122,10 +141,10 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
                             return;
                         }
                     }
-                    presenter.onContinueClick(Integer.parseInt(speedField.getText().toString()), Integer.parseInt(differenceField.getText().toString()), elevation, elevationDiff, mClosedRoute.isChecked());
+                    mPresenter.onContinueClick(Integer.parseInt(speedField.getText().toString()), Integer.parseInt(differenceField.getText().toString()), elevation, elevationDiff, mClosedRoute.isChecked());
                 }
 
-                presenter.saveElevation(Float.parseFloat(elevation.getText().toString()), Float.parseFloat(elevationDiff.getText().toString()));
+                mPresenter.saveElevation(Float.parseFloat(elevation.getText().toString()), Float.parseFloat(elevationDiff.getText().toString()));
 
 
             }
@@ -134,7 +153,7 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
         back.setOnClickListener(new OnSingleClickListener() {
             @Override
             public void onSingleClick(View v) {
-                presenter.onCancelClick();
+                mPresenter.onCancelClick();
             }
         });
 
@@ -169,7 +188,7 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
 
         mLatestPointDelayContainer.setVisibility(View.GONE);
 
-        presenter.onActivityLoad();
+        mPresenter.onActivityLoad();
     }
 
     @Override
@@ -186,7 +205,8 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
     public void pushDifferenceError() {
         Toast.makeText(this, R.string.difference_error, Toast.LENGTH_SHORT).show();
 
-        UIEffects.TextView.attachErrorWithShake(this, differenceField, () -> { });
+        UIEffects.TextView.attachErrorWithShake(this, differenceField, () -> {
+        });
     }
 
     @Override
@@ -250,6 +270,7 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
     public int getOriginTimerSeconds() {
         return mOriginTimerSeconds;
     }
+
     @Override
     public int getDestTimerMinutes() {
         return mDestTimerMinutes;

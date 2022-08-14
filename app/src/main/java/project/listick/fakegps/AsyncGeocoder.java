@@ -6,16 +6,8 @@ import android.location.Geocoder;
 
 import androidx.annotation.NonNull;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-
-import okhttp3.ResponseBody;
-import project.listick.fakegps.API.LFGSimpleApi;
 
 public class AsyncGeocoder {
 
@@ -77,62 +69,62 @@ public class AsyncGeocoder {
 
     public void autocomplete(String address, double latitude, double longitude, Callback callback) {
 
-        AsyncWebClient webClient = new AsyncWebClient(mActivity, true);
-        webClient.connect(LFGSimpleApi.Geocoder.getAutcompleteURL(address, latitude, longitude), new AsyncWebClient.Callback() {
-            @Override
-            public void onSuccess(ResponseBody responseBody) {
-                String body = null;
-                try {
-                    body = responseBody.string();
-                } catch (IOException e) {
-                    android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, e);
-                    onError();
-                }
-                if (body == null) {
-                    onError();
-                    return;
-                }
-
-                try {
-                    JSONObject contentObject = new JSONObject(body);
-                    JSONArray features = contentObject.getJSONArray("features");
-
-                    List<Address> addressList = new ArrayList<>();
-                    for (int i = 0; i < features.length(); i++) {
-                        JSONObject arrays = features.getJSONObject(i);
-
-                        JSONObject geometry = arrays.getJSONObject("geometry");
-                        JSONArray coordinates = geometry.getJSONArray("coordinates");
-
-                        double latitude = coordinates.getDouble(1);
-                        double longitude = coordinates.getDouble(0);
-
-                        String a = mGeocoder.getFromLocation(latitude, longitude, 1).get(0).getAddressLine(0);
-                        Address address = new Address(Locale.getDefault());
-                        address.setAddressLine(0, a);
-
-                        address.setLatitude(latitude);
-                        address.setLongitude(longitude);
-
-                        addressList.add(address);
-
-                        if (i == 3) {
-                            break;
-                        }
-                    }
-
-                    callback.onSuccess(addressList);
-                } catch (Exception e) {
-                    android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, e);
-                }
-
-            }
-
-            @Override
-            public void onError() {
-
-            }
-        });
+//        AsyncWebClient webClient = new AsyncWebClient(mActivity, true);
+//        webClient.connect(LFGSimpleApi.Geocoder.getAutcompleteURL(address, latitude, longitude), new AsyncWebClient.Callback() {
+//            @Override
+//            public void onSuccess(ResponseBody responseBody) {
+//                String body = null;
+//                try {
+//                    body = responseBody.string();
+//                } catch (IOException e) {
+//                    android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, e);
+//                    onError();
+//                }
+//                if (body == null) {
+//                    onError();
+//                    return;
+//                }
+//
+//                try {
+//                    JSONObject contentObject = new JSONObject(body);
+//                    JSONArray features = contentObject.getJSONArray("features");
+//
+//                    List<Address> addressList = new ArrayList<>();
+//                    for (int i = 0; i < features.length(); i++) {
+//                        JSONObject arrays = features.getJSONObject(i);
+//
+//                        JSONObject geometry = arrays.getJSONObject("geometry");
+//                        JSONArray coordinates = geometry.getJSONArray("coordinates");
+//
+//                        double latitude = coordinates.getDouble(1);
+//                        double longitude = coordinates.getDouble(0);
+//
+//                        String a = mGeocoder.getFromLocation(latitude, longitude, 1).get(0).getAddressLine(0);
+//                        Address address = new Address(Locale.getDefault());
+//                        address.setAddressLine(0, a);
+//
+//                        address.setLatitude(latitude);
+//                        address.setLongitude(longitude);
+//
+//                        addressList.add(address);
+//
+//                        if (i == 3) {
+//                            break;
+//                        }
+//                    }
+//
+//                    callback.onSuccess(addressList);
+//                } catch (Exception e) {
+//                    android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, e);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onError() {
+//
+//            }
+//        });
     }
 
 }

@@ -20,6 +20,7 @@ import project.listick.fakegps.Services.FixedSpooferService;
 import project.listick.fakegps.Services.ISpooferService;
 import project.listick.fakegps.Services.RouteSpooferService;
 import project.listick.fakegps.SpoofingPlaceInfo;
+import project.listick.fakegps.UI.CaptchaActivity;
 import project.listick.fakegps.UI.SettingsActivity;
 
 /*
@@ -97,10 +98,15 @@ public class RouteSettingsPresenter implements RouteSettingsImpl.Presenter {
         prepareUi();
 
         if (AppPreferences.getAutoAltitude(mActivity)) {
-            findElevation();
+            findElevation(null);
         } else {
-            getElevation();
+            setElevation();
         }
+    }
+
+    @Override
+    public void onChallengePassed(String challengeResult) {
+        findElevation(challengeResult);
     }
 
     @Override
@@ -120,7 +126,8 @@ public class RouteSettingsPresenter implements RouteSettingsImpl.Presenter {
     }
 
 
-    private void getElevation() {
+    @Override
+    public void setElevation() {
         elevation = mSettingsPreferences.getFloat(ELEVATION, 120);
         elevationDiff = mSettingsPreferences.getFloat(ELEVATION_DIFF, 2);
         mUserInterface.getElevation(elevation, elevationDiff);
@@ -221,7 +228,7 @@ public class RouteSettingsPresenter implements RouteSettingsImpl.Presenter {
         return !(difference >= speed);
     }
 
-    private void findElevation() {
+    private void findElevation(String challengeResult) {
         if (RouteManager.routes != null
                 && RouteManager.routes.size() > 0
                 && RouteManager.routes.get(0).getRoute() != null
@@ -245,7 +252,7 @@ public class RouteSettingsPresenter implements RouteSettingsImpl.Presenter {
         mUserInterface.startAltitudeDetection();
 
         LFGSimpleApi.Elevation service = new LFGSimpleApi.Elevation(mActivity.getCacheDir());
-        service.getElevation(latitude, longitude, new LFGSimpleApi.ElevationCallback() {
+        service.getElevation(latitude, longitude, challengeResult, new LFGSimpleApi.Elevation.ElevationCallback() {
             @Override
             public void onRequestSuccess(float altitude) {
                 elevation = altitude;
@@ -257,11 +264,16 @@ public class RouteSettingsPresenter implements RouteSettingsImpl.Presenter {
             }
 
             @Override
+            public void onCaptchaResult() {
+                mActivity.startActivityForResult(new Intent(mActivity, CaptchaActivity.class), CaptchaActivity.ACTIVITY_REQUEST_CODE);
+            }
+
+            @Override
             public void onRequestError() {
                 mActivity.runOnUiThread(() -> {
                     mUserInterface.stopAltitudeDetection();
                     mUserInterface.onAltitudeDetermined(false, false);
-                    getElevation();
+                    setElevation();
                 });
             }
         });

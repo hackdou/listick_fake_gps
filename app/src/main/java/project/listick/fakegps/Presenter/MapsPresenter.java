@@ -20,12 +20,14 @@ import android.os.RemoteException;
 import android.provider.Settings;
 import android.text.Spanned;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.text.HtmlCompat;
 
@@ -35,15 +37,20 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Overlay;
 
+import java.io.IOException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Request;
+import okhttp3.Response;
 import project.listick.fakegps.AsyncGeocoder;
-import project.listick.fakegps.AsyncWebClient;
-import project.listick.fakegps.BuildRoute;
 import project.listick.fakegps.Contract.MapsImpl;
 import project.listick.fakegps.CurrentLocation;
+import project.listick.fakegps.DeviceUtils;
 import project.listick.fakegps.Enumerations.ERouteTransport;
 import project.listick.fakegps.FakeGPSApplication;
 import project.listick.fakegps.JoystickOverlay;
@@ -60,6 +67,7 @@ import project.listick.fakegps.Model.MapsModel;
 import project.listick.fakegps.MultipleRoutesInfo;
 import project.listick.fakegps.PermissionManager;
 import project.listick.fakegps.R;
+import project.listick.fakegps.RouteBuilder;
 import project.listick.fakegps.RouteManager;
 import project.listick.fakegps.RouteMarker.OriginAndDestMarker;
 import project.listick.fakegps.Services.FixedSpooferService;
@@ -68,6 +76,7 @@ import project.listick.fakegps.Services.JoystickService;
 import project.listick.fakegps.Services.RouteSpooferService;
 import project.listick.fakegps.SpoofingPlaceInfo;
 import project.listick.fakegps.UI.BookmarksActivity;
+import project.listick.fakegps.UI.CaptchaActivity;
 import project.listick.fakegps.UI.EditTextDialog;
 import project.listick.fakegps.UI.JoystickActivity;
 import project.listick.fakegps.UI.MockLocationPermissionActivity;
@@ -75,6 +84,8 @@ import project.listick.fakegps.UI.PrettyToast;
 import project.listick.fakegps.UI.RouteSettingsActivity;
 import project.listick.fakegps.UI.SearchActivity;
 import project.listick.fakegps.UI.SettingsActivity;
+import project.listick.fakegps.UI.WrongTimeActivity;
+import project.listick.fakegps.WebClient;
 
 /*
  * Created by LittleAngry on 25.12.18 (macOS 10.12)
@@ -110,94 +121,123 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
 
         restoreRoute();
         sendDeviceAnalytics();
+
+        if (!PermissionManager.isPackageInstalled(ListickApp.TELEGRAM_PACKAGE_NAME)) {
+            mUserInterface.removeMenuItem(R.id.our_telegram);
+        }
+
+        if (!PermissionManager.isPackageInstalled(ListickApp.PLAY_PACKAGE_NAME)) {
+            mUserInterface.removeMenuItem(R.id.rate_app);
+        }
     }
 
     public void sendDeviceAnalytics() {
-        new Thread(() -> {
-            AsyncWebClient.Sync webClient = new AsyncWebClient.Sync("https://k92321.hostch02.fornex.host/send_analytics.php");
+        JSONObject postData = new JSONObject();
+        try {
+            JSONObject deviceData = new JSONObject();
 
-            JSONObject postData = new JSONObject();
-            try {
-                JSONObject deviceData = new JSONObject();
+            deviceData.put("ro.product.manufacturer", Build.MANUFACTURER);
+            deviceData.put("ro.hardware", Build.HARDWARE);
+            deviceData.put("SUPPORTED_ABIS", Arrays.toString(Build.SUPPORTED_ABIS));
+            deviceData.put("SUPPORTED_32_BIT_ABIS", Arrays.toString(Build.SUPPORTED_32_BIT_ABIS));
+            deviceData.put("SUPPORTED_64_BIT_ABIS", Arrays.toString(Build.SUPPORTED_64_BIT_ABIS));
+            deviceData.put("ro.build.version.codename", Build.VERSION.CODENAME);
+            deviceData.put("ro.build.version.release", Build.VERSION.RELEASE);
+            deviceData.put("ro.build.host", Build.HOST);
+            deviceData.put("ro.build.version.sdk_int", Build.VERSION.SDK_INT);
+            deviceData.put("ro.build.tags", Build.TAGS);
+            deviceData.put("ro.product.name", Build.PRODUCT);
+            deviceData.put("ro.product.brand", Build.BRAND);
+            deviceData.put("ro.build.id", Build.ID);
+            deviceData.put("ro.bootloader", Build.BOOTLOADER);
+            deviceData.put("ro.product.model", Build.MODEL);
+            deviceData.put("ro.build.display.id", Build.DISPLAY);
+            deviceData.put("kernel_version", System.getProperty("os.version"));
 
-                deviceData.put("ro.product.manufacturer", Build.MANUFACTURER);
-                deviceData.put("ro.hardware", Build.HARDWARE);
-                deviceData.put("SUPPORTED_ABIS", Arrays.toString(Build.SUPPORTED_ABIS));
-                deviceData.put("SUPPORTED_32_BIT_ABIS", Arrays.toString(Build.SUPPORTED_32_BIT_ABIS));
-                deviceData.put("SUPPORTED_64_BIT_ABIS", Arrays.toString(Build.SUPPORTED_64_BIT_ABIS));
-                deviceData.put("ro.build.version.codename", Build.VERSION.CODENAME);
-                deviceData.put("ro.build.version.release", Build.VERSION.RELEASE);
-                deviceData.put("ro.build.host", Build.HOST);
-                deviceData.put("ro.build.version.sdk_int", Build.VERSION.SDK_INT);
-                deviceData.put("ro.build.tags", Build.TAGS);
-                deviceData.put("ro.product.name", Build.PRODUCT);
-                deviceData.put("ro.product.brand", Build.BRAND);
-                deviceData.put("ro.build.id", Build.ID);
-                deviceData.put("ro.bootloader", Build.BOOTLOADER);
-                deviceData.put("ro.product.model", Build.MODEL);
-                deviceData.put("ro.build.display.id", Build.DISPLAY);
+            deviceData.put("ro.build.user", Build.USER);
+            deviceData.put("ro.product.device", Build.DEVICE);
+            deviceData.put("ro.build.fingerprint", Build.FINGERPRINT);
+            deviceData.put("ro.build.version.sdk", Build.VERSION.SDK);
+            deviceData.put("ro.product.board", Build.BOARD);
+            deviceData.put("ro.build.version.preview_sdk", Build.VERSION.PREVIEW_SDK_INT);
+            deviceData.put("ro.build.version.incremental", Build.VERSION.INCREMENTAL);
+            deviceData.put("ro.build.version.base_os", Build.VERSION.BASE_OS);
 
-                deviceData.put("ro.build.user", Build.USER);
-                deviceData.put("ro.product.device", Build.DEVICE);
-                deviceData.put("ro.build.fingerprint", Build.FINGERPRINT);
-                deviceData.put("ro.build.version.sdk", Build.VERSION.SDK);
-                deviceData.put("ro.product.board", Build.BOARD);
-                deviceData.put("ro.build.version.preview_sdk", Build.VERSION.PREVIEW_SDK_INT);
-                deviceData.put("ro.build.version.incremental", Build.VERSION.INCREMENTAL);
-                deviceData.put("ro.build.version.base_os", Build.VERSION.BASE_OS);
+            deviceData.put("ro.build.date.utc", Build.TIME);
+            deviceData.put("radio_version", Build.getRadioVersion());
 
-                deviceData.put("ro.build.date.utc", Build.TIME);
-                deviceData.put("radio_version", Build.getRadioVersion());
+            JSONObject resolution = new JSONObject();
 
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE); // the results will be higher than using the activity context object or the getWindowManager() shortcut
+            wm.getDefaultDisplay().getMetrics(displayMetrics);
+            int screenWidth = displayMetrics.widthPixels;
+            int screenHeight = displayMetrics.heightPixels;
+            int densityDpi = displayMetrics.densityDpi;
+            float density = displayMetrics.density;
 
-                JSONObject resolution = new JSONObject();
+            JSONObject dm = new JSONObject();
+            dm.put("width", screenWidth);
+            dm.put("height", screenHeight);
+            dm.put("densityDpi", densityDpi);
+            dm.put("density", density);
+            resolution.put("metrics", dm);
 
-                DisplayMetrics displayMetrics = new DisplayMetrics();
-                WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE); // the results will be higher than using the activity context object or the getWindowManager() shortcut
-                wm.getDefaultDisplay().getMetrics(displayMetrics);
-                int screenWidth = displayMetrics.widthPixels;
-                int screenHeight = displayMetrics.heightPixels;
-                int densityDpi = displayMetrics.densityDpi;
-                float density = displayMetrics.density;
+            DisplayMetrics realMetricts = new DisplayMetrics();
+            wm.getDefaultDisplay().getRealMetrics(realMetricts);
+            screenWidth = realMetricts.widthPixels;
+            screenHeight = realMetricts.heightPixels;
+            densityDpi = realMetricts.densityDpi;
+            density = realMetricts.density;
 
+            JSONObject rm = new JSONObject();
+            rm.put("width", screenWidth);
+            rm.put("height", screenHeight);
+            rm.put("densityDpi", densityDpi);
+            rm.put("density", density);
+            resolution.put("real_metrics", rm);
 
-                JSONObject dm = new JSONObject();
-                dm.put("width", screenWidth);
-                dm.put("height", screenHeight);
-                dm.put("densityDpi", densityDpi);
-                dm.put("density", density);
-                resolution.put("metrics", dm);
+            JSONObject systemBars = new JSONObject();
+            systemBars.put("status_bar_height", getStatusBarHeight());
+            systemBars.put("navigation_bar_height", getNavBarHeight());
+            resolution.put("system_bars", systemBars);
 
-                DisplayMetrics realMetricts = new DisplayMetrics();
-                wm.getDefaultDisplay().getRealMetrics(realMetricts);
-                screenWidth = realMetricts.widthPixels;
-                screenHeight = realMetricts.heightPixels;
-                densityDpi = realMetricts.densityDpi;
-                density = realMetricts.density;
+            deviceData.put("display_metrics", resolution);
 
-                JSONObject rm = new JSONObject();
-                rm.put("width", screenWidth);
-                rm.put("height", screenHeight);
-                rm.put("densityDpi", densityDpi);
-                rm.put("density", density);
-                resolution.put("real_metrics", rm);
+            JSONObject hardware = new JSONObject();
+            hardware.put("number_of_cores", Runtime.getRuntime().availableProcessors());
+            hardware.put("cpu", DeviceUtils.getCPUInfo());
+            hardware.put("ram", DeviceUtils.getTotalRAM());
 
-                JSONObject systemBars = new JSONObject();
-                systemBars.put("status_bar_height", getStatusBarHeight());
-                systemBars.put("navigation_bar_height", getNavBarHeight());
-                resolution.put("system_bars", systemBars);
-
-                deviceData.put("display_metrics", resolution);
-
-                postData.put("device_info", deviceData.toString());
+            deviceData.put("hardware", hardware);
 
 
-            } catch (JSONException e) {
-                e.printStackTrace();
+            postData.put("device_info", deviceData.toString());
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("RouteBuilder", "sendDeviceAnalytics: " + postData.toString());
+
+        Request request = new Request.Builder()
+                .url("https://littleangry.ru/collector.php")
+                .build();
+
+        WebClient.getInstance().makeRequest(request, new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                if (e.getCause() instanceof CertificateException) {
+                    mActivity.startActivity(new Intent(mActivity, WrongTimeActivity.class));
+                    mActivity.finish();
+                }
             }
 
-            webClient.post(postData);
-        }).start();
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                response.close();
+            }
+        });
+
     }
 
     public int getStatusBarHeight() {
@@ -217,7 +257,6 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
         }
         return navigationBarHeight;
     }
-
 
 
     public MapsPresenter(MapView mMap, Context context) {
@@ -240,7 +279,7 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
                 int speed = intent.getIntExtra(RouteSpooferService.UI_SPEED_KEY, 0);
                 double passedDistance = intent.getDoubleExtra(RouteSpooferService.UI_PASSED_DISTANCE, 0);
                 double totalDistance = intent.getDoubleExtra(RouteSpooferService.UI_TOTAL_DISTANCE, 0);
-                mUserInterface.updateSpeedbar(speed, passedDistance, totalDistance);
+                mUserInterface.updateRouteInfo(speed, passedDistance, totalDistance);
             }
         };
         context.registerReceiver(updateUIReciver, filter);
@@ -258,13 +297,13 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
                         String locationName = locations.get(0).getAddressLine(0);
 
                         mUserInterface.setAddressShimmer(false);
-                        mUserInterface.getAddress(locationName);
+                        mUserInterface.setAddress(locationName);
                     }
 
                     @Override
                     public void onError() {
                         mUserInterface.setAddressShimmer(false);
-                        mUserInterface.getAddress(mContext.getString(R.string.failed_to_define_address));
+                        mUserInterface.setAddress(mContext.getString(R.string.failed_to_define_address));
                     }
                 });
 
@@ -295,7 +334,7 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
 
     @Override
     public void setFixedMode() {
-        mUserInterface.enableDone(View.GONE);
+        mUserInterface.startSpoofingVisibility(View.GONE);
         mUserInterface.enableStop(View.VISIBLE);
         mUserInterface.toggleEditButton(View.VISIBLE);
         mUserInterface.lockSearchBar(true);
@@ -310,7 +349,7 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
         if (MainServiceControl.isRouteSpoofingServiceRunning(mContext)) {
             mContext.stopService(new Intent(mContext, RouteSpooferService.class));
             RouteSettingsPresenter.unbindService();
-         } else if (MainServiceControl.isFixedSpoofingServiceRunning(mContext))
+        } else if (MainServiceControl.isFixedSpoofingServiceRunning(mContext))
             mContext.stopService(new Intent(mContext, FixedSpooferService.class));
 
         for (Overlay overlay : mMap.getOverlays()) {
@@ -318,15 +357,15 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
                 mMap.getOverlays().remove(overlay);
         }
 
-        mUserInterface.enableSpeedbar(View.GONE);
-        mUserInterface.enableDone(View.VISIBLE);
+        mUserInterface.setRouteInfo(View.GONE);
+        mUserInterface.startSpoofingVisibility(View.VISIBLE);
         mUserInterface.enablePause(View.GONE);
         mUserInterface.toggleEditButton(View.GONE);
         mUserInterface.enableStop(View.GONE);
         mUserInterface.lockSearchBar(false);
         isRoute = false;
 
-        removeRoute();
+        removeAllRoutes();
     }
 
     @Override
@@ -400,11 +439,37 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
     }
 
     @Override
-    public void onRoute(double sourceLat, double sourceLong, double destLat, double destLong, ERouteTransport transport) {
-        BuildRoute.BuildRouteListener routeListener = new BuildRoute.BuildRouteListener() {
+    public void onRoute(Intent data) {
+        String captchaResult = data.getStringExtra(CaptchaActivity.KEY_CAPTCHA_RESULT);
+
+        double sourceLat = data.getDoubleExtra(SpoofingPlaceInfo.ORIGIN_LAT, 0f);
+        double sourceLong = data.getDoubleExtra(SpoofingPlaceInfo.ORIGIN_LNG, 0f);
+        double destLat = data.getDoubleExtra(SpoofingPlaceInfo.DEST_LAT, 0f);
+        double destLong = data.getDoubleExtra(SpoofingPlaceInfo.DEST_LNG, 0f);
+
+        mUserInterface.setWhereToAddress(data.getStringExtra(SpoofingPlaceInfo.DEST_ADDRESS));
+
+        ERouteTransport transport = (ERouteTransport) data.getSerializableExtra(SpoofingPlaceInfo.TRANSPORT);
+
+        RouteBuilder builder = new RouteBuilder(mActivity, sourceLat, sourceLong, destLat, destLong, transport, captchaResult);
+        builder.build(new RouteBuilder.IRouteBuilder() {
+            @Override
+            public void prepare() {
+                mUserInterface.inflateProgressLayout(view -> {
+                    builder.cancel();
+                    mUserInterface.removeProgressLayout();
+                    if (RouteManager.routes.size() >= 2)
+                        removeLatestRoute();
+                    else
+                        removeAllRoutes();
+
+                });
+            }
+
             @Override
             public void onRouteBuilt(ArrayList<GeoPoint> points, double sourceLat, double sourceLong, double destLat, double destLong, double distance, ERouteTransport transport) {
-
+                mUserInterface.lockSearchBar(true);
+                mUserInterface.removeProgressLayout();
                 PrettyToast.show(mActivity, mActivity.getString(R.string.route_built), R.drawable.ic_route);
 
                 double distancePoly = MapUtil.drawPath(mMap, points);
@@ -456,6 +521,8 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
                 if (RouteManager.routes.size() >= 2) {
                     RouteSettingsActivity.startActivity(mActivity, -1, -1, distance, true, true, RouteSettingsPresenter.ANOTHER_ROUTE_ADDED);
                 }
+
+                mMap.invalidate();
             }
 
             @Override
@@ -465,35 +532,29 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
             }
 
             @Override
-            public void onCancel() {
-                if (RouteManager.routes.size() >= 2)
-                    removeLatestRoute();
-                else
-                    removeRoute();
+            public void captchaResponse() {
+                mUserInterface.removeProgressLayout();
+                mActivity.startActivityForResult(new Intent(mActivity, CaptchaActivity.class)
+                        .putExtra(CaptchaActivity.KEY_DATA, data), SearchActivity.ACTIVITY_REQUEST_CODE);
             }
-        };
-
-        BuildRoute buildRoute = new BuildRoute(sourceLat, sourceLong, destLat, destLong, mContext, transport, routeListener);
-        buildRoute.execute();
-
-        mMap.invalidate();
-
+        });
     }
 
     @Override
     public void onDestroy() {
         saveCurrentLocation();
         destroyLocationMarker();
+        removeAllRoutes();
     }
 
     @Override
     public void onMenu() {
-        mModel.openMenu();
+        mUserInterface.openMenu(true);
     }
 
     public void setRoutingMode() {
-        mUserInterface.enableSpeedbar(View.VISIBLE);
-        mUserInterface.enableDone(View.GONE);
+        mUserInterface.setRouteInfo(View.VISIBLE);
+        mUserInterface.startSpoofingVisibility(View.GONE);
         mUserInterface.enablePause(View.VISIBLE);
         mUserInterface.toggleRemoveRoute(View.GONE);
         mUserInterface.enableStop(View.VISIBLE);
@@ -507,11 +568,11 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
         if (RouteManager.routes.size() >= 2)
             removeLatestRoute();
         else
-            removeRoute();
+            removeAllRoutes();
     }
 
     @Override
-    public void removeRoute() {
+    public void removeAllRoutes() {
         if (RouteManager.routes == null || RouteManager.routes.size() == 0)
             return;
 
@@ -571,8 +632,8 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
 
             mUserInterface.lockSearchBar(true);
             mUserInterface.setWhereToAddress(destAddress);
-
-            onRoute(originLat, originLng, destLat, destLng, transport);
+            // fixme
+            onRoute(data);
             mMap.getController().animateTo(new GeoPoint(originLat, originLng), 17d, MapLoader.ZOOM_ANIMATION_SPEED);
         } else if (resultCode == BookmarksActivity.STATIC) {
             double latitude = data.getDoubleExtra(BookmarksDBHelper.KEY_LATITUDE, 0f);
@@ -600,6 +661,9 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
             case R.id.about:
                 showAboutDialog();
                 break;
+            case R.id.our_telegram:
+                openTelegramChannel();
+                break;
             // case R.id.add_in_bookmarks:
             //     addInBookmarks();
             //     break;
@@ -610,6 +674,18 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
                 openGpForRate();
                 break;
         }
+    }
+
+    private void openTelegramChannel() {
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.setData(Uri.parse("https://t.me/project_listick"));
+
+        if (PermissionManager.isPackageInstalled(ListickApp.TELEGRAM_PACKAGE_NAME))
+            intent.setPackage(ListickApp.TELEGRAM_PACKAGE_NAME);
+        else if (PermissionManager.isPackageInstalled(ListickApp.TELEGRAM_WEB_PACKAGE_NAME))
+            intent.setPackage(ListickApp.TELEGRAM_WEB_PACKAGE_NAME);
+
+        mActivity.startActivity(intent);
     }
 
     private void showAboutDialog() {
@@ -765,7 +841,7 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
     }
 
     private void initSearch() {
-        mUserInterface.getAddress(mContext.getString(R.string.failed_to_define_address));
+        mUserInterface.setAddress(mContext.getString(R.string.failed_to_define_address));
     }
 
 

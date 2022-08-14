@@ -15,7 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
@@ -24,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -44,7 +45,6 @@ import java.util.Locale;
 
 import project.listick.fakegps.AppPreferences;
 import project.listick.fakegps.Contract.MapsImpl;
-import project.listick.fakegps.Enumerations.ERouteTransport;
 import project.listick.fakegps.ListickApp;
 import project.listick.fakegps.LocationOperations;
 import project.listick.fakegps.MapLoader;
@@ -54,7 +54,6 @@ import project.listick.fakegps.Presenter.MapsPresenter;
 import project.listick.fakegps.Presenter.RouteSettingsPresenter;
 import project.listick.fakegps.R;
 import project.listick.fakegps.Services.RouteSpooferService;
-import project.listick.fakegps.SpoofingPlaceInfo;
 
 /*
  * Created by LittleAngry on 25.12.18 (macOS 10.12)
@@ -62,6 +61,7 @@ import project.listick.fakegps.SpoofingPlaceInfo;
 public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout mDrawerLayout;
+    private NavigationView mNavigationView;
 
     private MapView mMap;
 
@@ -87,6 +87,7 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
     private ImageView mMenuIcon;
 
     private BottomSheetBehavior mBottomSheet;
+    private View mProgressDialog;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -125,8 +126,8 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
         mSourceAddress = findViewById(R.id.firstAddress);
         mDrawerLayout = findViewById(R.id.drawer);
 
-        NavigationView navigationView = findViewById(R.id.navigation_header_container);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView = findViewById(R.id.navigation_header_container);
+        mNavigationView.setNavigationItemSelectedListener(this);
 
         mMap.addMapListener(new DelayedMapListener(new MapListener() {
             @Override
@@ -219,7 +220,7 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
             params = (ViewGroup.MarginLayoutParams) findViewById(R.id.active_route_info).getLayoutParams();
             params.bottomMargin = bottomInset;
 
-            navigationView.setPadding(0, topInset, 0, 0);
+            mNavigationView.setPadding(0, topInset, 0, 0);
             mJoystickMessage.setPadding(0, topInset, 0, 0);
             return insets.consumeSystemWindowInsets();
         });
@@ -243,26 +244,15 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
         mRestoreLocation.setAlpha(0);
 
         mPresenter.onActivityLoad();
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == SearchActivity.ACTIVITY_REQUEST_CODE && data != null) {
-            double sourceLat = data.getDoubleExtra(SpoofingPlaceInfo.ORIGIN_LAT, 0f);
-            double sourceLong = data.getDoubleExtra(SpoofingPlaceInfo.ORIGIN_LNG, 0f);
-
-            double destLat = data.getDoubleExtra(SpoofingPlaceInfo.DEST_LAT, 0f);
-            double destLong = data.getDoubleExtra(SpoofingPlaceInfo.DEST_LNG, 0f);
-
-            setWhereToAddress(data.getStringExtra(SpoofingPlaceInfo.DEST_ADDRESS));
-
-            ERouteTransport transport = (ERouteTransport) data.getSerializableExtra(SpoofingPlaceInfo.TRANSPORT);
-
-            lockSearchBar(true);
-
-            if (mPresenter != null && destLat != 0f)
-                mPresenter.onRoute(sourceLat, sourceLong, destLat, destLong, transport);
+            if (mPresenter != null)
+                mPresenter.onRoute(data);
         }
 
         if (requestCode == LocationOperations.ROUTE_SETTINGS_REQUEST_CODE && resultCode == RESULT_OK) {
@@ -321,12 +311,12 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
     }
 
     @Override
-    public void enableDone(int visibility) {
+    public void startSpoofingVisibility(int visibility) {
         mDoneContainer.setVisibility(visibility);
     }
 
     @Override
-    public void enableSpeedbar(int visibility) {
+    public void setRouteInfo(int visibility) {
         mSpeedInfo.setText("0 " + AppPreferences.getUnitName(this, AppPreferences.getStandartUnit(this)));
         mDistanceInfo.setText("0/0");
     }
@@ -353,7 +343,7 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
     }
 
     @Override
-    public void updateSpeedbar(int speed, double passedDistance, double distance) {
+    public void updateRouteInfo(int speed, double passedDistance, double distance) {
         String unit = AppPreferences.getUnitName(this, AppPreferences.getStandartUnit(this));
 
         String format = String.format(Locale.ENGLISH, "%.2f", passedDistance) + "/" + String.format(Locale.ENGLISH, "%.2f", distance);
@@ -375,9 +365,14 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
 
     @SuppressLint("WrongConstant")
     @Override
-    public void useMenu(boolean isOpen) {
+    public void openMenu(boolean isOpen) {
         if (isOpen) mDrawerLayout.openDrawer(Gravity.START);
         else mDrawerLayout.closeDrawer(Gravity.END);
+    }
+
+    @Override
+    public void removeMenuItem(int itemId) {
+        mNavigationView.getMenu().removeItem(itemId);
     }
 
     @Override
@@ -386,7 +381,7 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
 
         boolean isServiceWorks = PermissionManager.isServiceRunning(getApplicationContext(), RouteSpooferService.class);
         if (!isServiceWorks)
-            mPresenter.removeRoute();
+            mPresenter.removeAllRoutes();
 
         setTheme(R.style.AppTheme);
         recreate();
@@ -421,7 +416,7 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
     }
 
     @Override
-    public void getAddress(String address) {
+    public void setAddress(String address) {
         mSourceAddress.setText(address);
     }
 
@@ -521,4 +516,27 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
         return false;
     }
 
+    @Override
+    public void inflateProgressLayout(View.OnClickListener onCancel) {
+        LinearLayout progressLayoutContainer = findViewById(R.id.route_building_status_container);
+        progressLayoutContainer.setVisibility(View.VISIBLE);
+        mProgressDialog = getLayoutInflater().inflate(R.layout.route_building_fullscreen_dialog, null);
+        mProgressDialog.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        progressLayoutContainer.addView(mProgressDialog);
+
+        progressLayoutContainer.findViewById(R.id.cancel).setOnClickListener(onCancel);
+        mProgressDialog.findViewById(R.id.loading).setOnClickListener(v -> { });
+        mDoneContainer.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.buttonUnavailable));
+        mDoneContainer.setEnabled(false);
+    }
+
+    @Override
+    public void removeProgressLayout() {
+        LinearLayout progressLayoutContainer = findViewById(R.id.route_building_status_container);
+        progressLayoutContainer.removeView(mProgressDialog);
+        progressLayoutContainer.setVisibility(View.GONE);
+
+        mDoneContainer.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.start_spoofing));
+        mDoneContainer.setEnabled(true);
+    }
 }

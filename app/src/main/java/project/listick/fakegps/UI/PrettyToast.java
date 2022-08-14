@@ -18,7 +18,6 @@ import project.listick.fakegps.R;
 
 public class PrettyToast {
 
-
     public static void show(Activity activity, String text, @DrawableRes int id) {
         View inflatedView = View.inflate(activity, R.layout.pretty_toast, (ViewGroup) activity.getWindow().getDecorView());
         View toast = inflatedView.findViewById(R.id.toast);

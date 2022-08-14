@@ -11,6 +11,18 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
+    <style name="ChallengeActivityTheme" parent="AppTheme">
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">#e4e4e4</item>
+        <item name="android:navigationBarColor">#f1f1f1</item>
+        <item name="backgroundColor">@color/white</item>
+    </style>
+
+
+    <style name="SettingsTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/primaryColor</item>
+    </style>
+
     <style name="LightTheme" parent="Theme.Material3.Light">
         <item name="colorPrimary">@color/material_gray_900</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

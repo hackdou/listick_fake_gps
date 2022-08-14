@@ -184,5 +184,9 @@
     <string name="map_tiles_title">Map tiles</string>
     <string name="traffic_side_title">Traffic side</string>
     <string name="delay_at_the_last_point">Delay at the last point:</string>
+    <string name="date_is_inaccurate">Date is inaccurate</string>
+    <string name="date_is_inaccurate_summary">You phone date is inaccurate!\nAdjust your clock and try again.</string>
+    <string name="adjust_clock">Adjust clock</string>
+    <string name="our_telegram">Our Telegram</string>
 
 </resources>

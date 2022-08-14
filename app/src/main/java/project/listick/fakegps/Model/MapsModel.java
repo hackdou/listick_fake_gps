@@ -42,10 +42,4 @@ public class MapsModel implements MapsImpl.ModelImpl {
         mMap.getController().setZoom(locationPreferences.getFloat(ListickApp.ZOOM, ListickApp.STANDART_ZOOM_VALUE));
     }
 
-
-    @Override
-    public void openMenu() {
-        mUserInterface.useMenu(true);
-    }
-
 }

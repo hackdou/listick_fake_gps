@@ -17,13 +17,13 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/cancel"
+        style="@style/ThemeOverlay.Material3.Button.ElevatedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginTop="15dp"
-        android:text="@string/cancel"
-        style="@style/ThemeOverlay.Material3.Button.ElevatedButton"
         android:backgroundTint="@color/red_tonal_button"
+        android:text="@string/cancel"
         android:textColor="@color/uicolor" />
 
 </RelativeLayout>
